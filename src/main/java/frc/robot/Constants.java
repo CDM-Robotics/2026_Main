@@ -84,7 +84,8 @@ public class Constants {
         public static final int kRearRightDrivingCanId = 7;
         public static final int kRearRightTurningCanId = 6;
 
-        public static final int kClimberCanId = 14;
+        public static final int kClimberRightCanId = 14;
+        public static final int kClimberLeftCanId = 15;
     
         public static final double kBumperDistance = Units.inchesToMeters(16.0);
     }
@@ -305,7 +306,7 @@ public class Constants {
 
         public static final double kIntake = 11.0;
         public static final double kHome = 0.0;
-        public static final double kExtend = 2000;  // 400 * 5:1 Neo Gear Ratio
+        public static final double kMaxHeight = 2000;  // 400 * 5:1 Neo Gear Ratio
 
         public static final double kS = 0.25;
         public static final double kV = 0.045;

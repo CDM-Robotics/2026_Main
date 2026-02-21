@@ -3,11 +3,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.GlobalVariables;
+import frc.robot.subsystems.ClimberPosition;
+
 
 public class ReadyClimberPosition extends SequentialCommandGroup {
-    public ReadyClimberPosition(GlobalVariables variables, CimberPosition pos) {
+    public ReadyClimberPosition(GlobalVariables variables, ClimberPosition climber) {
         addCommands(
-            new InstantCommand(() -> pos.setGoal(variables.getDesiredClimberGoal))
+            new InstantCommand(() -> climber.setGoal(variables.getDesiredClimberGoal()))
             , new ClimberInPosition(climber)
         );
     }

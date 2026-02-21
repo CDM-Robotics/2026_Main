@@ -6,7 +6,8 @@ public interface ClimberIO {
         public double m_climberGoal;
         public double m_climberCurrent;
         public double m_climberSetpoint;
-        public double m_climberVoltage;
+        public double m_leftVoltage;
+        public double m_rightVoltage;
         public double m_speed;
         public boolean m_climberInPosition;
     }

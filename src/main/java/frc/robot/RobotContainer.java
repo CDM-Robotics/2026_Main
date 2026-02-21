@@ -14,11 +14,15 @@ import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.GlobalVariables.ClimberMode;
+import frc.robot.commands.ReadyClimberPosition;
+import frc.robot.subsystems.ClimberPosition;
 
 public class RobotContainer {
     Vision myVision = null;
 
     public final GlobalVariables m_variables = new GlobalVariables();
+
+    final ClimberPosition climber = new ClimberPosition();
 
     SwerveModule frontLeft = new SwerveModule(HardwareConstants.kFrontLeftDrivingCanId, 
                                               MotorControllerType.SPARK_FLEX, 
