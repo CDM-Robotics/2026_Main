@@ -308,8 +308,10 @@ public class Constants {
         public static final double kHome = 0.0;
         public static final double kMaxHeight = 2000;  // 400 * 5:1 Neo Gear Ratio
 
-        public static final double kS = 0.25;
-        public static final double kV = 0.045;
-        public static final double kG = 0.35;
+        // TODO - Measure the kS, kV, kG empirically by moving the motors using the Rev Hardware Client and measure
+        // the voltage required to overcome static friction (kS)
+        public static final double kS = 0.35;  // Originally 0.25
+        public static final double kV = 0.045; // Originally 0.045
+        public static final double kG = 0.25;  // Originally 0.35
     }
 }

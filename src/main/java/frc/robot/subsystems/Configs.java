@@ -23,19 +23,17 @@ public class Configs {
                 .smartCurrentLimit(40);
 
             m_climberRightConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput)
                 .pid(
                     ClimberPositionConstants.kP,
                     ClimberPositionConstants.kI,
                     ClimberPositionConstants.kD
                 )
-                .feedForward(
-                    new FeedForwardConfig()
-                        .kG(ClimberPositionConstants.kG)
-                        .kS(ClimberPositionConstants.kS)
-                        .kV(ClimberPositionConstants.kV)
-                )
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput);
+                .feedForward.kS(ClimberPositionConstants.kS);
+                        /* .kG(ClimberPositionConstants.kG)
+                        .kV(ClimberPositionConstants.kV); */
+                
 
             m_climberRightConfig.encoder
                 .uvwAverageDepth(2)
@@ -56,14 +54,16 @@ public class Configs {
                     ClimberPositionConstants.kI,
                     ClimberPositionConstants.kD
                 )
-                .feedForward(
-                    new FeedForwardConfig()
-                        .kG(ClimberPositionConstants.kG)
-                        .kS(ClimberPositionConstants.kS)
-                        .kV(ClimberPositionConstants.kV)
-                )
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput);
+                .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput)
+                .pid(
+                    ClimberPositionConstants.kP,
+                    ClimberPositionConstants.kI,
+                    ClimberPositionConstants.kD
+                )
+                .feedForward.kS(ClimberPositionConstants.kS);
+                        /* .kG(ClimberPositionConstants.kG)
+                        .kV(ClimberPositionConstants.kV); */
 
             m_climberLeftConfig.encoder
                 .uvwAverageDepth(2)
