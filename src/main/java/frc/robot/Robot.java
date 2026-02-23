@@ -4,9 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -19,6 +24,8 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  private final RobotContainer m_rc;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -27,6 +34,10 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    m_rc = new RobotContainer();
+    m_rc.subsystemInit();
+    m_rc.resetHeading();
   }
 
   /**
@@ -37,7 +48,9 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -54,6 +67,16 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+
+    Alliance alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
+    if (alliance == Alliance.Red) {
+      m_rc.setResetInitialPose(new Pose2d(15.6, 7.0, new Rotation2d(180.0)));
+      m_rc.scheduleTrajectory("SquareDanceRed");
+    } else {
+      m_rc.setResetInitialPose(new Pose2d(2.0, 1.0, new Rotation2d(0.0)));
+      m_rc.scheduleTrajectory("SquareDance");
+    }
+
   }
 
   /** This function is called periodically during autonomous. */

@@ -4,8 +4,12 @@ import org.tritontech.core.*;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.HardwareConstants;
@@ -22,11 +26,11 @@ public class RobotContainer {
 
     public final GlobalVariables m_variables = new GlobalVariables();
 
-    final ClimberPosition climber = new ClimberPosition();
+    //final ClimberPosition climber = new ClimberPosition();
 
     SwerveModule frontLeft = new SwerveModule(HardwareConstants.kFrontLeftDrivingCanId, 
-                                              MotorControllerType.SPARK_FLEX, 
-                                              MotorControllerType.SPARK_FLEX, 
+                                              MotorControllerType.SPARK_MAX, 
+                                              MotorControllerType.SPARK_MAX, 
                                               HardwareConstants.kFrontLeftTurningCanId, 
                                               DriveConstants.kFrontLeftChassisAngularOffset, 
                                               "FrontLeft", 
@@ -37,8 +41,8 @@ public class RobotContainer {
                                                                         ModuleConstants.kDrivingA));
 
     SwerveModule frontRight = new SwerveModule(HardwareConstants.kFrontRightDrivingCanId, 
-                                              MotorControllerType.SPARK_FLEX, 
-                                              MotorControllerType.SPARK_FLEX, 
+                                              MotorControllerType.SPARK_MAX, 
+                                              MotorControllerType.SPARK_MAX, 
                                               HardwareConstants.kFrontRightTurningCanId, 
                                               DriveConstants.kFrontRightChassisAngularOffset, 
                                               "FrontRight", 
@@ -49,8 +53,8 @@ public class RobotContainer {
                                                                         ModuleConstants.kDrivingA));
 
     SwerveModule rearLeft = new SwerveModule(HardwareConstants.kRearLeftDrivingCanId, 
-                                             MotorControllerType.SPARK_FLEX, 
-                                             MotorControllerType.SPARK_FLEX, 
+                                             MotorControllerType.SPARK_MAX, 
+                                             MotorControllerType.SPARK_MAX, 
                                              HardwareConstants.kRearLeftTurningCanId, 
                                              DriveConstants.kRearLeftChassisAngularOffset, 
                                              "RearLeft", 
@@ -60,8 +64,8 @@ public class RobotContainer {
                                                                         ModuleConstants.kDrivingV, 
                                                                         ModuleConstants.kDrivingA));
     SwerveModule rearRight = new SwerveModule(HardwareConstants.kRearRightDrivingCanId, 
-                                              MotorControllerType.SPARK_FLEX, 
-                                              MotorControllerType.SPARK_FLEX, 
+                                              MotorControllerType.SPARK_MAX, 
+                                              MotorControllerType.SPARK_MAX, 
                                               HardwareConstants.kRearRightTurningCanId, 
                                               DriveConstants.kRearRightChassisAngularOffset, 
                                               "RearRight", 
@@ -82,7 +86,7 @@ public class RobotContainer {
                                              null);
 
     CommandXboxController m_driverController; // Initialized by DriveTrain
-    CommandXboxController m_engineerController = new CommandXboxController(OIConstants.kEngineerControllerPort);
+    //CommandXboxController m_engineerController = new CommandXboxController(OIConstants.kEngineerControllerPort);
 
     public RobotContainer() {
         m_DriveTrain.setChassisConstants(DriveConstants.kTrackWidth, 
@@ -108,23 +112,44 @@ public class RobotContainer {
         // rightTrinner().onFalse -- resets throttle factor to 1.0
 
         // Floor Intake
-        m_engineerController.x().onTrue(null);
+    //    m_engineerController.x().onTrue(null);
 
         // Dump to human player
-        m_engineerController.b().onTrue(null);
+    //    m_engineerController.b().onTrue(null);
 
         // Shoot
-        m_engineerController.y().onTrue(null);
+    //    m_engineerController.y().onTrue(null);
 
         // Climber to Home position
-        m_engineerController.rightTrigger().onTrue(new SequentialCommandGroup(
+/*         m_engineerController.rightTrigger().onTrue(new SequentialCommandGroup(
                         new InstantCommand(() -> m_variables.setClimberMode(ClimberMode.HOME)),
-                        new ReadyClimberPosition(m_variables, climber)));
+                        new ReadyClimberPosition(m_variables, climber))); */
 
         // Climber to full extension
-        m_engineerController.rightBumper().onTrue(null);
+    //    m_engineerController.rightBumper().onTrue(null);
 
         // Climber stop
-        m_engineerController.a().onTrue(null);
+    //    m_engineerController.a().onTrue(null);
+    }
+
+    public void resetHeading() {
+        m_DriveTrain.zeroHeading();
+    }
+
+    public void subsystemInit() {
+
+    }
+
+    public void setResetInitialPose(Pose2d pose) {
+        m_DriveTrain.hardResetPose(pose);
+        m_DriveTrain.resetMeasuredOdometry(pose);
+    }
+
+    public void scheduleTrajectory(String trajectory) {
+        Command traj = m_DriveTrain.buildTrajectory(trajectory);
+        if(traj != null) {
+            SequentialCommandGroup scg = new SequentialCommandGroup(new WaitCommand(10.0), traj);
+            CommandScheduler.getInstance().schedule(scg);
+        }
     }
 }
