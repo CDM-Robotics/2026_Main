@@ -29,8 +29,8 @@ public class RobotContainer {
     //final ClimberPosition climber = new ClimberPosition();
 
     SwerveModule frontLeft = new SwerveModule(HardwareConstants.kFrontLeftDrivingCanId, 
-                                              MotorControllerType.SPARK_MAX, 
-                                              MotorControllerType.SPARK_MAX, 
+                                              MotorControllerType.SPARK_FLEX, 
+                                              MotorControllerType.SPARK_FLEX, 
                                               HardwareConstants.kFrontLeftTurningCanId, 
                                               DriveConstants.kFrontLeftChassisAngularOffset, 
                                               "FrontLeft", 
@@ -41,8 +41,8 @@ public class RobotContainer {
                                                                         ModuleConstants.kDrivingA));
 
     SwerveModule frontRight = new SwerveModule(HardwareConstants.kFrontRightDrivingCanId, 
-                                              MotorControllerType.SPARK_MAX, 
-                                              MotorControllerType.SPARK_MAX, 
+                                              MotorControllerType.SPARK_FLEX, 
+                                              MotorControllerType.SPARK_FLEX, 
                                               HardwareConstants.kFrontRightTurningCanId, 
                                               DriveConstants.kFrontRightChassisAngularOffset, 
                                               "FrontRight", 
@@ -53,8 +53,8 @@ public class RobotContainer {
                                                                         ModuleConstants.kDrivingA));
 
     SwerveModule rearLeft = new SwerveModule(HardwareConstants.kRearLeftDrivingCanId, 
-                                             MotorControllerType.SPARK_MAX, 
-                                             MotorControllerType.SPARK_MAX, 
+                                             MotorControllerType.SPARK_FLEX, 
+                                             MotorControllerType.SPARK_FLEX, 
                                              HardwareConstants.kRearLeftTurningCanId, 
                                              DriveConstants.kRearLeftChassisAngularOffset, 
                                              "RearLeft", 
@@ -64,8 +64,8 @@ public class RobotContainer {
                                                                         ModuleConstants.kDrivingV, 
                                                                         ModuleConstants.kDrivingA));
     SwerveModule rearRight = new SwerveModule(HardwareConstants.kRearRightDrivingCanId, 
-                                              MotorControllerType.SPARK_MAX, 
-                                              MotorControllerType.SPARK_MAX, 
+                                              MotorControllerType.SPARK_FLEX, 
+                                              MotorControllerType.SPARK_FLEX, 
                                               HardwareConstants.kRearRightTurningCanId, 
                                               DriveConstants.kRearRightChassisAngularOffset, 
                                               "RearRight", 
