@@ -73,8 +73,8 @@ public class Robot extends TimedRobot {
       m_rc.setResetInitialPose(new Pose2d(15.6, 7.0, new Rotation2d(180.0)));
       m_rc.scheduleTrajectory("SquareDanceRed");
     } else {
-      m_rc.setResetInitialPose(new Pose2d(2.0, 1.0, new Rotation2d(0.0)));
-      m_rc.scheduleTrajectory("SquareDance");
+      m_rc.setResetInitialPose(new Pose2d(1.0, 1.0, new Rotation2d(0.0)));
+      m_rc.scheduleTrajectory("RightSideShootOnly");
     }
 
   }
