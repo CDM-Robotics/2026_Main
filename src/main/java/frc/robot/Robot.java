@@ -31,9 +31,14 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    m_chooser.setDefaultOption("DO NOTHING", "HALT");
+    m_chooser.addOption("Square Dance", "SquareDance");
+    m_chooser.addOption("Do-Si-Do", "DoSiDo");
+    m_chooser.addOption("Right-Side Shoot Only", "RightSideShootOnly");
+    m_chooser.addOption("Center Shoot Only", "CenterShootOnly");
+    m_chooser.addOption("Left-Side Shoot Only", "LeftSideShootOnly");
+
+    SmartDashboard.putData("AUTO", m_chooser);
 
     m_rc = new RobotContainer();
     m_rc.subsystemInit();
@@ -69,12 +74,19 @@ public class Robot extends TimedRobot {
     System.out.println("Auto selected: " + m_autoSelected);
 
     Alliance alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
+    String routine = m_chooser.getSelected();
+
+    if(routine.compareToIgnoreCase("HALT") == 0) {
+      return;
+    }
+
     if (alliance == Alliance.Red) {
+      String toRun = routine.concat("Red");
       m_rc.setResetInitialPose(new Pose2d(15.6, 7.0, new Rotation2d(180.0)));
-      m_rc.scheduleTrajectory("SquareDanceRed");
+      m_rc.scheduleTrajectory(toRun);
     } else {
       m_rc.setResetInitialPose(new Pose2d(1.0, 1.0, new Rotation2d(0.0)));
-      m_rc.scheduleTrajectory("RightSideShootOnly");
+      m_rc.scheduleTrajectory(routine);
     }
 
   }
