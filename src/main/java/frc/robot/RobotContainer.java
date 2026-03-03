@@ -5,6 +5,7 @@ import org.tritontech.core.*;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -146,7 +147,8 @@ public class RobotContainer {
     }
 
     public void scheduleTrajectory(String trajectory) {
-        Command traj = m_DriveTrain.buildTrajectory(trajectory);
+        Command traj = m_DriveTrain.buildTrajectory(trajectory, new PIDController(6.0, 0.0, 0.3));
+
         if(traj != null) {
             SequentialCommandGroup scg = new SequentialCommandGroup(new WaitCommand(10.0), traj);
             CommandScheduler.getInstance().schedule(scg);
