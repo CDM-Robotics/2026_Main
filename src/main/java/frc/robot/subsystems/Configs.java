@@ -7,6 +7,7 @@ import com.revrobotics.spark.config.LimitSwitchConfig.Behavior;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.Constants.ClimberPositionConstants;
+import frc.robot.Constants.FloorIntakeConstants;
 import frc.robot.Constants.HardwareConstants;
 
 public class Configs {
@@ -72,5 +73,28 @@ public class Configs {
             m_climberLeftConfig.limitSwitch.forwardLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor).reverseLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor);
 
         }       
+    }
+
+    public static final class FloorIntakeConfig{
+        public static final SparkMaxConfig m_elevatorShooterConfig = new SparkMaxConfig();
+
+        static{
+                m_elevatorShooterConfig
+                        .disableFollowerMode()
+                        .idleMode(IdleMode.kBrake)
+                        .inverted(FloorIntakeConstants.kCoralHolderInverted)
+                        .smartCurrentLimit(80)
+                        .voltageCompensation(12.0);
+                m_elevatorShooterConfig.encoder
+                        .quadratureAverageDepth(2)
+                        .quadratureMeasurementPeriod(10);
+                m_elevatorShooterConfig.closedLoop
+                        .pidf(FloorIntakeConstants.kP, FloorIntakeConstants.kI, FloorIntakeConstants.kD, FloorIntakeConstants.kFF)
+                        .outputRange(FloorIntakeConstants.kMinOutput, FloorIntakeConstants.kMaxOutput)
+                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+                m_elevatorShooterConfig.limitSwitch
+                        .forwardLimitSwitchEnabled(false)
+                        .reverseLimitSwitchEnabled(false);
+        }
     }
 }

@@ -319,4 +319,23 @@ public class Constants {
         public static final double kV = 0.045; // Originally 0.045
         public static final double kG = 0.25;  // Originally 0.35
     }
+
+    public static final class FloorIntakeConstants{
+        public static final double kP = 0.0;
+        public static final double kPReverse = 0.0002;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+        public static final double kFF = 0.0;
+        public static final double kV = 0.00205;
+        public static final double kS = .12;
+        public static final boolean kCoralHolderInverted = true;
+        public static final double kMinOutput = -1;
+        public static final double kMaxOutput = 1;
+        public static final double kIntake = 3000;
+        public static final double kOff = 0;
+        public static final double kReverse = -1000;//-2500
+        public static final double kReverseSlow = -1000;
+        public static final double kHolding = 50;
+        public static final double kShoot = 6000;
+    }
 }
