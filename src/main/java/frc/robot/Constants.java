@@ -89,8 +89,8 @@ public class Constants {
         public static final int kClimberRightCanId = 14;
         public static final int kClimberLeftCanId = 15;
 
-        public static final int kShooterCanId = 12;
-        public static final int kFeederCanId = 13;
+        public static final int kFloorIntakeCanId = 12;
+        public static final int kHopperCanId = 13;
     
         public static final double kBumperDistance = Units.inchesToMeters(16.0);
     }

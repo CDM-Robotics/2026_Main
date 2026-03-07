@@ -21,6 +21,8 @@ import frc.robot.Constants.VisionConstants;
 import frc.robot.GlobalVariables.ClimberMode;
 import frc.robot.commands.ReadyClimberPosition;
 import frc.robot.subsystems.ClimberPosition;
+import frc.robot.subsystems.FloorIntake;
+import frc.robot.subsystems.Hopper;
 
 public class RobotContainer {
     Vision myVision = null;
@@ -87,8 +89,10 @@ public class RobotContainer {
                                              null);
 
     CommandXboxController m_driverController; // Initialized by DriveTrain
-    //CommandXboxController m_engineerController = new CommandXboxController(OIConstants.kEngineerControllerPort);
+    CommandXboxController m_engineerController = new CommandXboxController(OIConstants.kEngineerControllerPort);
 
+    public final FloorIntake floorIntake = new FloorIntake();
+    public final Hopper hopper = new Hopper();
     public RobotContainer() {
         m_DriveTrain.setChassisConstants(DriveConstants.kTrackWidth, 
                                          HardwareConstants.kBumperDistance);
@@ -113,13 +117,18 @@ public class RobotContainer {
         // rightTrinner().onFalse -- resets throttle factor to 1.0
 
         // Floor Intake
-    //    m_engineerController.x().onTrue(null);
-
-        // Dump to human player
-    //    m_engineerController.b().onTrue(null);
+        m_engineerController.x().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-1000)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(-2000))));
+        m_engineerController.x().onFalse(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(0))));
 
         // Shoot
-    //    m_engineerController.y().onTrue(null);
+        m_engineerController.y().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-4500)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(3000))));
+        m_engineerController.y().onFalse(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(0))));
+
+        // Dump to human player
+        //m_engineerController.b().onTrue(null);
+
+        // Shoot
+        //m_engineerController.y().onTrue(null);
 
         // Climber to Home position
 /*         m_engineerController.rightTrigger().onTrue(new SequentialCommandGroup(

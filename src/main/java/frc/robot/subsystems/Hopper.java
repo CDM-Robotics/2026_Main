@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
@@ -14,10 +14,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Configs;
 import frc.robot.subsystems.Configs.FloorIntakeConfig;
+import frc.robot.Constants;
 import frc.robot.Constants.FloorIntakeConstants;
 import frc.robot.Constants.HardwareConstants;
 
-public class Shooter extends SubsystemBase {
+public class Hopper extends SubsystemBase {
 
     public static class ElevatorShooterIOInputs {
         public double m_intakeCurrent;
@@ -35,8 +36,8 @@ public class Shooter extends SubsystemBase {
 
     
 
-    public Shooter() {
-        elevatorShooterMotor = new SparkMax(8, MotorType.kBrushless);
+    public Hopper() {
+        elevatorShooterMotor = new SparkMax(Constants.HardwareConstants.kHopperCanId, MotorType.kBrushless);
 
         //initialize PID controller
         m_elevatorShooterController = elevatorShooterMotor.getClosedLoopController();
@@ -51,7 +52,7 @@ public class Shooter extends SubsystemBase {
         m_shooterReference = 0;
     }
 
-    public void setReference(double p_rpm){
+    public void setSetpoint(double p_rpm){
         m_elevatorShooterFeedforward = new SimpleMotorFeedforward(FloorIntakeConstants.kS, FloorIntakeConstants.kV);
         if(p_rpm < 0){
             FloorIntakeConfig.m_elevatorShooterConfig.closedLoop.p(FloorIntakeConstants.kPReverse);
@@ -62,13 +63,13 @@ public class Shooter extends SubsystemBase {
         m_shooterReference = p_rpm;
     }
 
-    public double getReference(){
+    public double getSetpoint(){
         return m_shooterReference;
     }
 
     public void PID() {
-        m_elevatorShooterController.setReference(m_shooterReference, ControlType.kVelocity, 
-            ClosedLoopSlot.kSlot0, m_elevatorShooterFeedforward.calculate(getReference()));
+        m_elevatorShooterController.setSetpoint(m_shooterReference, ControlType.kVelocity, 
+            ClosedLoopSlot.kSlot0, m_elevatorShooterFeedforward.calculate(getSetpoint()));
     }
 
     public double getVelocity(){
@@ -76,7 +77,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void updateInputs(ElevatorShooterIOInputs inputs){
-        inputs.m_intakeReference = getReference();
+        inputs.m_intakeReference = getSetpoint();
         inputs.m_intakeCurrent = getCurrent();
         inputs.m_intakeVelocity = getVelocity();
     }
