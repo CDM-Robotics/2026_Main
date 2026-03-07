@@ -33,7 +33,6 @@ public class Robot extends TimedRobot {
   public Robot() {
     m_chooser.setDefaultOption("DO NOTHING", "HALT");
     m_chooser.addOption("Square Dance", "SquareDance");
-    m_chooser.addOption("Do-Si-Do", "DoSiDo");
     m_chooser.addOption("Right-Side Shoot Only", "RightSideShootOnly");
     m_chooser.addOption("Center Shoot Only", "CenterShootOnly");
     m_chooser.addOption("Left-Side Shoot Only", "LeftSideShootOnly");

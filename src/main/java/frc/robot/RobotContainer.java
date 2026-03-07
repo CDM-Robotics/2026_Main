@@ -150,7 +150,7 @@ public class RobotContainer {
         Command traj = m_DriveTrain.buildTrajectory(trajectory, new PIDController(6.0, 0.0, 0.3));
 
         if(traj != null) {
-            SequentialCommandGroup scg = new SequentialCommandGroup(new WaitCommand(10.0), traj);
+            SequentialCommandGroup scg = new SequentialCommandGroup(new WaitCommand(1.0), traj);
             CommandScheduler.getInstance().schedule(scg);
         }
     }
