@@ -28,6 +28,7 @@ public class RobotContainer {
     Vision myVision = null;
 
     public final GlobalVariables m_variables = new GlobalVariables();
+    final ClimberPosition climber = new ClimberPosition();
 
     //final ClimberPosition climber = new ClimberPosition();
 
@@ -93,6 +94,7 @@ public class RobotContainer {
 
     public final FloorIntake floorIntake = new FloorIntake();
     public final Hopper hopper = new Hopper();
+
     public RobotContainer() {
         m_DriveTrain.setChassisConstants(DriveConstants.kTrackWidth, 
                                          HardwareConstants.kBumperDistance);
@@ -117,13 +119,17 @@ public class RobotContainer {
         // rightTrinner().onFalse -- resets throttle factor to 1.0
 
         // Floor Intake
-        m_engineerController.x().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-1000)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(-2000))));
+        m_engineerController.x().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-3000)).withTimeout(1.0) , new InstantCommand(() -> hopper.setSetpoint(-2000) )));
         m_engineerController.x().onFalse(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(0))));
 
         // Shoot
-        m_engineerController.y().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-4500)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(3000))));
+        m_engineerController.y().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-4000)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(4000))));
         m_engineerController.y().onFalse(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(0))));
 
+        m_engineerController.rightTrigger().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setClimberMode(ClimberMode.HOME))
+                                                  , new ReadyClimberPosition(m_variables, climber)));
+        m_engineerController.rightBumper().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setClimberMode(ClimberMode.EXTEND))
+                                                  , new ReadyClimberPosition(m_variables, climber)));
         // Dump to human player
         //m_engineerController.b().onTrue(null);
 

@@ -25,13 +25,17 @@ public class Configs {
 
             m_climberRightConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .pidf(ClimberPositionConstants.kP,
+                    ClimberPositionConstants.kI,
+                    ClimberPositionConstants.kD,
+                    ClimberPositionConstants.kFF)
                 .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput)
-                .pid(
+                /* .pid(
                     ClimberPositionConstants.kP,
                     ClimberPositionConstants.kI,
                     ClimberPositionConstants.kD
-                )
-                .feedForward.kS(ClimberPositionConstants.kS);
+                ) */;
+                //.feedForward.kS(ClimberPositionConstants.kS);
                         /* .kG(ClimberPositionConstants.kG)
                         .kV(ClimberPositionConstants.kV); */
                 
@@ -61,8 +65,8 @@ public class Configs {
                     ClimberPositionConstants.kP,
                     ClimberPositionConstants.kI,
                     ClimberPositionConstants.kD
-                )
-                .feedForward.kS(ClimberPositionConstants.kS);
+                );
+                //.feedForward.kS(ClimberPositionConstants.kS);
                         /* .kG(ClimberPositionConstants.kG)
                         .kV(ClimberPositionConstants.kV); */
 

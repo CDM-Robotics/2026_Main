@@ -93,6 +93,7 @@ public class Constants {
         public static final int kHopperCanId = 13;
     
         public static final double kBumperDistance = Units.inchesToMeters(16.0);
+        public static final double kDefaultGyroBias = 0.0025;
     }
 
     public static final class DriveConstants {
@@ -321,13 +322,13 @@ public class Constants {
     }
 
     public static final class FloorIntakeConstants{
-        public static final double kP = 0.0;
+        public static final double kP = 0.00;
         public static final double kPReverse = 0.0002;
         public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kD = 0.00;
         public static final double kFF = 0.0;
         public static final double kV = 0.00205;
-        public static final double kS = .12;
+        public static final double kS = .12;   // WAS 0.12
         public static final boolean kCoralHolderInverted = true;
         public static final double kMinOutput = -1;
         public static final double kMaxOutput = 1;

@@ -18,7 +18,7 @@ import frc.robot.GlobalVariables;
 import frc.robot.subsystems.ClimberIO.ClimberIoInputs;
 
 public class ClimberPosition extends SubsystemBase {
-    private final SparkMax climberLeftMotor;
+    //private final SparkMax climberLeftMotor;
     private final SparkMax climberRightMotor;
 
     //private final RelativeEncoder climberLeftEncoder;
@@ -36,8 +36,8 @@ public class ClimberPosition extends SubsystemBase {
 
     public ClimberPosition() {
         // Initialize climber NEO motor 
-        climberLeftMotor = new SparkMax(HardwareConstants.kClimberLeftCanId, SparkMax.MotorType.kBrushless);
-        climberRightMotor = new SparkMax(HardwareConstants.kClimberRightCanId, SparkMax.MotorType.kBrushless);
+     //   climberLeftMotor = new SparkMax(HardwareConstants.kClimberLeftCanId, SparkMax.MotorType.kBrushless);
+        climberRightMotor = new SparkMax(HardwareConstants.kClimberLeftCanId, SparkMax.MotorType.kBrushless);
 
         // Initialize encoder and controller
         //climberLeftEncoder = climberLeftMotor.getEncoder();
@@ -47,7 +47,9 @@ public class ClimberPosition extends SubsystemBase {
 
         // Configure motor settings
         climberRightMotor.configure(Configs.ClimberConfig.m_climberRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        climberLeftMotor.configure(Configs.ClimberConfig.m_climberLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    //    climberLeftMotor.configure(Configs.ClimberConfig.m_climberLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        resetEncoder();
     }
 
     // Returns the current elevator position
@@ -57,9 +59,9 @@ public class ClimberPosition extends SubsystemBase {
 
     
     // Gets the current drawn by the left motor
-    public double getLeftCurrent() {
+    /* public double getLeftCurrent() {
         return climberLeftMotor.getOutputCurrent();
-    }
+    } */
 
     // Gets the current drawn by the right motor
     public double getRightCurrent() {
@@ -100,10 +102,10 @@ public class ClimberPosition extends SubsystemBase {
     public void updateInputs(ClimberIoInputs inputs) {
         inputs.m_climberGoal = goal.position;
         inputs.m_climberPos = getPosition();
-        inputs.m_climberCurrent = getLeftCurrent() + getRightCurrent();
+        inputs.m_climberCurrent = getRightCurrent();
         inputs.m_climberInPosition = inPosition();
         inputs.m_climberSetpoint = setpoint.position;
-        inputs.m_leftVoltage = climberLeftMotor.getBusVoltage();
+        inputs.m_leftVoltage = 0.0; //climberLeftMotor.getBusVoltage();
         inputs.m_rightVoltage = climberRightMotor.getBusVoltage();
     }
 

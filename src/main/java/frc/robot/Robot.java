@@ -38,6 +38,8 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Left-Side Shoot Only", "LeftSideShootOnly");
 
     SmartDashboard.putData("AUTO", m_chooser);
+    SmartDashboard.putNumber("NavX Yaw Rate", 0.0);
+    SmartDashboard.putNumber("Steering Bias", Constants.HardwareConstants.kDefaultGyroBias);
 
     m_rc = new RobotContainer();
     m_rc.subsystemInit();
@@ -88,6 +90,7 @@ public class Robot extends TimedRobot {
       m_rc.scheduleTrajectory(routine);
     }
 
+    m_rc.m_DriveTrain.setGyroBias(SmartDashboard.getNumber("Steering Bias", Constants.HardwareConstants.kDefaultGyroBias));
   }
 
   /** This function is called periodically during autonomous. */
@@ -106,7 +109,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    m_rc.m_DriveTrain.setGyroBias(SmartDashboard.getNumber("Steering Bias", Constants.HardwareConstants.kDefaultGyroBias));
+  }
 
   /** This function is called periodically during operator control. */
   @Override
