@@ -297,7 +297,7 @@ public class Constants {
     public static final class ClimberPositionConstants {
         public static final boolean kLeftInverted = true;
         public static final boolean kRightInverted = false;
-        public static final double kP = 0.45;
+        public static final double kP = 0.05;
         public static final double kI = 0.0;
         public static final double kD = 0.01;
         public static final double kFF = 0.0;
@@ -306,13 +306,13 @@ public class Constants {
 
         public static final double kGearRatio = 18.0 / 22.0;
         public static final double kConversionFactor = Math.PI * (1.0 + 3.0/8.0) * kGearRatio;  // For a 11/8" diameter hub  (pi * d)
-        public static final double kMaxVel = 180.0 * 1.25 / kConversionFactor;
-        public static final double kMaxAccel = 140.0 * 1.25 / kConversionFactor;
+        public static final double kMaxVel = 2000.0 * 1.25 / kConversionFactor;
+        public static final double kMaxAccel = 1000.0 * 1.25 / kConversionFactor;
         public static final double kTolerance = 2.0;
         
         public static final double kIntake = 11.0;  // TODO - Maybe account for gear-ratio??? 1:25
         public static final double kHome = 0.0;  // TODO - Maybe account for gear-ratio???  1?25
-        public static final double kMaxHeight = 400.0 * 5;  // TIMES THE GEAR RATIO
+        public static final double kMaxHeight = 9.25*2000.0/7.75;  // TIMES THE GEAR RATIO
 
 
         public static final double kS = 0.25;//.233
