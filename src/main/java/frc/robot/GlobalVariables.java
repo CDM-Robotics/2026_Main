@@ -6,6 +6,7 @@ import frc.robot.Constants.ClimberPositionConstants;
 
 public class GlobalVariables extends SubsystemBase{
     public static double m_climberExtension = 0;
+    public static double g_climberExtension = 0;
 
     public enum RobotState {
         HOME,
@@ -13,60 +14,59 @@ public class GlobalVariables extends SubsystemBase{
     }
 
     RobotState m_robotState = RobotState.HOME;
-
-    public void setRobotState(RobotState s) {
-        m_robotState = s;
+    
+    public void setRobotState(RobotState p_robotState){
+        m_robotState = p_robotState;
     }
 
-    public RobotState getRobotState() {
+    public boolean isRobotState(RobotState p_robotState){
+        return m_robotState == p_robotState;
+    }
+
+    public RobotState getRobotState(){
         return m_robotState;
     }
 
-    public boolean isRobotState(RobotState s) {
-        return (m_robotState == s);
+    public enum Mode{
+        HOME
+        ,EXTEND
     }
 
-    public enum ClimberMode {
-        HOME,
-        EXTEND
+    Mode m_mode = Mode.HOME;
+  
+    public void setMode(Mode p_mode){
+        m_mode = p_mode;
     }
 
-    ClimberMode m_climberMode = ClimberMode.HOME;
-
-    public void setClimberMode(ClimberMode m) {
-        m_climberMode = m;
+    public boolean isMode(Mode p_mode){
+        return m_mode == p_mode;
     }
 
-    public boolean isClimberMode(ClimberMode m) {
-        return m_climberMode == m;
+    public Mode getMode(){
+        return m_mode;
     }
 
-    public ClimberMode getClimberMode() {
-        return m_climberMode;
-    }
-
-    public double getDesiredClimberGoal() {
-        double pos;
-
-        switch (getClimberMode()) {
+    public double getDesiredElevatorGoal() {
+    double pos;
+        switch (getMode()) {
             case HOME:
                 pos = ClimberPositionConstants.kHome;
                 break;
 
             case EXTEND:
                 pos = ClimberPositionConstants.kMaxHeight;
-        
+                break;
+                
             default:
                 pos = ClimberPositionConstants.kHome;
-                break;
         }
 
         return pos;
-    }
+  }
 
     @Override
     public void periodic() {
         SmartDashboard.putString("RobotState", getRobotState().toString());
-        SmartDashboard.putString("Mode", getClimberMode().toString());
+        SmartDashboard.putString("mode", getMode().toString());
     }
 }

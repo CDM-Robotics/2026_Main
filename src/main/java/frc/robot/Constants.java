@@ -295,30 +295,29 @@ public class Constants {
     }
 
     public static final class ClimberPositionConstants {
-        public static final boolean kInverted = false;
+        public static final boolean kLeftInverted = true;
+        public static final boolean kRightInverted = false;
         public static final double kP = 0.45;
         public static final double kI = 0.0;
         public static final double kD = 0.01;
         public static final double kFF = 0.0;
-        
-        public static final double kMinOutput = -1.0;
-        public static final double kMaxOutput = 1.0;
+        public static final double kMinOutput = -1.1;
+        public static final double kMaxOutput = 1.1;
 
         public static final double kGearRatio = 18.0 / 22.0;
-        public static final double kConversionFactor = Math.PI * (1.0 + 3.0 / 8.0) * kGearRatio;
-        public static final double kMaxVel = 180.0 * 1 / kConversionFactor;
-        public static final double kMaxAccel = 140.0 * 1 / kConversionFactor;
+        public static final double kConversionFactor = Math.PI * (1.0 + 3.0/8.0) * kGearRatio;  // For a 11/8" diameter hub  (pi * d)
+        public static final double kMaxVel = 180.0 * 1.25 / kConversionFactor;
+        public static final double kMaxAccel = 140.0 * 1.25 / kConversionFactor;
         public static final double kTolerance = 2.0;
+        
+        public static final double kIntake = 11.0;  // TODO - Maybe account for gear-ratio??? 1:25
+        public static final double kHome = 0.0;  // TODO - Maybe account for gear-ratio???  1?25
+        public static final double kMaxHeight = 400.0 * 5;  // TIMES THE GEAR RATIO
 
-        public static final double kIntake = 11.0;
-        public static final double kHome = 0.0;
-        public static final double kMaxHeight = 2000;  // 400 * 5:1 Neo Gear Ratio
 
-        // TODO - Measure the kS, kV, kG empirically by moving the motors using the Rev Hardware Client and measure
-        // the voltage required to overcome static friction (kS)
-        public static final double kS = 0.35;  // Originally 0.25
-        public static final double kV = 0.045; // Originally 0.045
-        public static final double kG = 0.25;  // Originally 0.35
+        public static final double kS = 0.25;//.233
+        public static final double kV = 0.045;//.045
+        public static final double kG = 0.35;//.01
     }
 
     public static final class FloorIntakeConstants{

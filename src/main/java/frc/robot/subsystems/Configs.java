@@ -12,71 +12,42 @@ import frc.robot.Constants.HardwareConstants;
 
 public class Configs {
     public static final class ClimberConfig{
-        public static final SparkMaxConfig m_climberRightConfig = new SparkMaxConfig();
-        public static final SparkMaxConfig m_climberLeftConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig m_climberConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig m_climberSlaveConfig = new SparkMaxConfig();
 
         static {
-            m_climberRightConfig
-                .idleMode(IdleMode.kBrake)
-                .inverted(ClimberPositionConstants.kInverted)
-                .disableFollowerMode()
-                .voltageCompensation(12.0)
-                .smartCurrentLimit(40);
+                m_climberConfig
+                        .idleMode(IdleMode.kBrake)
+                        .inverted(ClimberPositionConstants.kRightInverted)
+                        .disableFollowerMode()
+                        .voltageCompensation(12.0)
+                        .smartCurrentLimit(40);
+                m_climberConfig.closedLoop
+                        .pidf(ClimberPositionConstants.kP, ClimberPositionConstants.kI, ClimberPositionConstants.kD, ClimberPositionConstants.kFF)
+                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                        .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput);
+                m_climberConfig.encoder
+                        .uvwAverageDepth(2)
+                        .uvwMeasurementPeriod(10)
+                        .positionConversionFactor(ClimberPositionConstants.kConversionFactor);
+                m_climberConfig.limitSwitch.forwardLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor).reverseLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor);
 
-            m_climberRightConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pidf(ClimberPositionConstants.kP,
-                    ClimberPositionConstants.kI,
-                    ClimberPositionConstants.kD,
-                    ClimberPositionConstants.kFF)
-                .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput)
-                /* .pid(
-                    ClimberPositionConstants.kP,
-                    ClimberPositionConstants.kI,
-                    ClimberPositionConstants.kD
-                ) */;
-                //.feedForward.kS(ClimberPositionConstants.kS);
-                        /* .kG(ClimberPositionConstants.kG)
-                        .kV(ClimberPositionConstants.kV); */
-                
-
-            m_climberRightConfig.encoder
-                .uvwAverageDepth(2)
-                .uvwMeasurementPeriod(10)
-                .positionConversionFactor(ClimberPositionConstants.kConversionFactor);
-            m_climberRightConfig.limitSwitch.forwardLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor).reverseLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor);
-
-            m_climberLeftConfig
-                .idleMode(IdleMode.kBrake)
-                .inverted(ClimberPositionConstants.kInverted)
-                .follow(HardwareConstants.kClimberRightCanId)
-                .voltageCompensation(12.0)
-                .smartCurrentLimit(40);
-
-            m_climberLeftConfig.closedLoop
-                .pid(
-                    ClimberPositionConstants.kP,
-                    ClimberPositionConstants.kI,
-                    ClimberPositionConstants.kD
-                )
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput)
-                .pid(
-                    ClimberPositionConstants.kP,
-                    ClimberPositionConstants.kI,
-                    ClimberPositionConstants.kD
-                );
-                //.feedForward.kS(ClimberPositionConstants.kS);
-                        /* .kG(ClimberPositionConstants.kG)
-                        .kV(ClimberPositionConstants.kV); */
-
-            m_climberLeftConfig.encoder
-                .uvwAverageDepth(2)
-                .uvwMeasurementPeriod(10)
-                .positionConversionFactor(ClimberPositionConstants.kConversionFactor);
-            m_climberLeftConfig.limitSwitch.forwardLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor).reverseLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor);
-
-        }       
+                m_climberSlaveConfig
+                        .idleMode(IdleMode.kBrake)
+                        .inverted(ClimberPositionConstants.kRightInverted)
+                        .follow(HardwareConstants.kClimberRightCanId, false)
+                        .voltageCompensation(12.0)
+                        .smartCurrentLimit(40);
+                m_climberSlaveConfig.closedLoop
+                        .pidf(ClimberPositionConstants.kP, ClimberPositionConstants.kI, ClimberPositionConstants.kD, ClimberPositionConstants.kFF)
+                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                        .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput);
+                m_climberSlaveConfig.encoder
+                        .uvwAverageDepth(2)
+                        .uvwMeasurementPeriod(10)
+                        .positionConversionFactor(ClimberPositionConstants.kConversionFactor);
+                m_climberSlaveConfig.limitSwitch.forwardLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor).reverseLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor);
+        }
     }
 
     public static final class FloorIntakeConfig{

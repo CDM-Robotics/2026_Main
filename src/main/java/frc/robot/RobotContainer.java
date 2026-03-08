@@ -18,7 +18,7 @@ import frc.robot.Constants.MAXSwerveModule;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.GlobalVariables.ClimberMode;
+import frc.robot.GlobalVariables.*;
 import frc.robot.commands.ReadyClimberPosition;
 import frc.robot.subsystems.ClimberPosition;
 import frc.robot.subsystems.FloorIntake;
@@ -126,9 +126,9 @@ public class RobotContainer {
         m_engineerController.y().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-4000)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(4000))));
         m_engineerController.y().onFalse(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(0))));
 
-        m_engineerController.rightTrigger().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setClimberMode(ClimberMode.HOME))
+        m_engineerController.rightTrigger().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.HOME))
                                                   , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.rightBumper().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setClimberMode(ClimberMode.EXTEND))
+        m_engineerController.rightBumper().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.EXTEND))
                                                   , new ReadyClimberPosition(m_variables, climber)));
         // Dump to human player
         //m_engineerController.b().onTrue(null);
