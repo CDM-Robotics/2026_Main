@@ -119,7 +119,7 @@ public class RobotContainer {
         // rightTrinner().onFalse -- resets throttle factor to 1.0
 
         // Floor Intake
-        m_engineerController.x().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-3000)).withTimeout(1.0) , new InstantCommand(() -> hopper.setSetpoint(-2000) )));
+        m_engineerController.x().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-2000)).withTimeout(1.0) , new InstantCommand(() -> hopper.setSetpoint(-10000) )));
         m_engineerController.x().onFalse(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(0))));
 
         // Shoot
@@ -132,11 +132,13 @@ public class RobotContainer {
                                                   , new ReadyClimberPosition(m_variables, climber)));
         m_engineerController.leftBumper().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CLIMB))
                                                   , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.povUpLeft().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_UP))
+        m_engineerController.povUp().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_UP))
                                                   , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.povDownLeft().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_DOWN))
+        m_engineerController.povDown().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_DOWN))
                                                   , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.povLeft().onFalse(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_STOP))
+        m_engineerController.povUp().onFalse(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_STOP))
+                                                  , new ReadyClimberPosition(m_variables, climber)));
+        m_engineerController.povDown().onFalse(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_STOP))
                                                   , new ReadyClimberPosition(m_variables, climber)));
         // Dump to human player
         //m_engineerController.b().onTrue(null);

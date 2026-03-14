@@ -128,7 +128,8 @@ public class ClimberPosition extends SubsystemBase {
     @Override
     public void periodic() {
         GlobalVariables.setCurrentPosition(elevatorController.getSetpoint());
-        SmartDashboard.putNumber("Climber Position", GlobalVariables.getCurrentPosition());
+        SmartDashboard.putNumber("Climber Current Position", GlobalVariables.getCurrentPosition());
+        SmartDashboard.putNumber("Climber Desired Position", GlobalVariables.getDesiredPosition());
 
         if (resetMode) {
             elevatorController.setSetpoint(-1, ControlType.kVoltage);

@@ -27,8 +27,8 @@ public class FloorIntake extends SubsystemBase {
         public double m_intakeReference;
     }
 
-    private SparkMax elevatorShooterMotor;
-    private final SparkClosedLoopController m_elevatorShooterController;
+    private SparkMax intakeShooterMotor;
+    private final SparkClosedLoopController m_intakeShooterController;
     private final RelativeEncoder m_shooterEncoder;
     private SimpleMotorFeedforward m_elevatorShooterFeedforward = new SimpleMotorFeedforward(FloorIntakeConstants.kS, FloorIntakeConstants.kV);
     private final ElevatorShooterIOInputs inputs = new ElevatorShooterIOInputs();
@@ -38,16 +38,16 @@ public class FloorIntake extends SubsystemBase {
     
 
     public FloorIntake() {
-        elevatorShooterMotor = new SparkMax(Constants.HardwareConstants.kFloorIntakeCanId, MotorType.kBrushless);
+        intakeShooterMotor = new SparkMax(Constants.HardwareConstants.kFloorIntakeCanId, MotorType.kBrushless);
 
         //initialize PID controller
-        m_elevatorShooterController = elevatorShooterMotor.getClosedLoopController();
+        m_intakeShooterController = intakeShooterMotor.getClosedLoopController();
 
         //initalize encoder
-        m_shooterEncoder = elevatorShooterMotor.getEncoder();
+        m_shooterEncoder = intakeShooterMotor.getEncoder();
 
         //apply config
-        elevatorShooterMotor.configure(Configs.FloorIntakeConfig.m_elevatorShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        intakeShooterMotor.configure(Configs.FloorIntakeConfig.m_elevatorShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         //reset target speed in init
         m_shooterReference = 0;
@@ -60,7 +60,7 @@ public class FloorIntake extends SubsystemBase {
         }else{
             FloorIntakeConfig.m_elevatorShooterConfig.closedLoop.p(FloorIntakeConstants.kP);
         }
-        elevatorShooterMotor.configure(FloorIntakeConfig.m_elevatorShooterConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        intakeShooterMotor.configure(FloorIntakeConfig.m_elevatorShooterConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_shooterReference = p_rpm;
     }
 
@@ -69,7 +69,7 @@ public class FloorIntake extends SubsystemBase {
     }
 
     public void PID() {
-        m_elevatorShooterController.setSetpoint(m_shooterReference, ControlType.kVelocity, 
+        m_intakeShooterController.setSetpoint(m_shooterReference, ControlType.kVelocity, 
             ClosedLoopSlot.kSlot0, m_elevatorShooterFeedforward.calculate(getSetpoint()));
     }
 
@@ -90,7 +90,7 @@ public class FloorIntake extends SubsystemBase {
     }
 
     public double getCurrent() {
-        return elevatorShooterMotor.getOutputCurrent();
+        return intakeShooterMotor.getOutputCurrent();
     }
 
 }

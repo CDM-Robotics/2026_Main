@@ -40,7 +40,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("AUTO", m_chooser);
     SmartDashboard.putNumber("NavX Yaw Rate", 0.0);
     SmartDashboard.putNumber("Steering Bias", Constants.HardwareConstants.kDefaultGyroBias);
-    SmartDashboard.putNumber("Climber Position", 0.0);
+    SmartDashboard.putNumber("Climber Current Position", GlobalVariables.getCurrentPosition());
+    SmartDashboard.putNumber("Climber Desired Position", GlobalVariables.getDesiredPosition());
 
     m_rc = new RobotContainer();
     m_rc.subsystemInit();

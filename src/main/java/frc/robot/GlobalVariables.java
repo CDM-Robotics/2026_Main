@@ -60,8 +60,12 @@ public class GlobalVariables extends SubsystemBase{
         return g_currentPosition;
     }
 
+    public static double getDesiredPosition() {
+        return g_desiredPosition;
+    }
+
     public double getDesiredElevatorGoal() {
-    double pos = ClimberPositionConstants.kHome;
+        double pos = getCurrentPosition();
         switch (getMode()) {
             case HOME:
                 g_desiredPosition = g_currentPosition;
@@ -80,13 +84,23 @@ public class GlobalVariables extends SubsystemBase{
                 
             case CUSTOM_UP:
                 g_desiredPosition += 10.0;
+                if(g_desiredPosition > ClimberPositionConstants.kMaxHeight) {
+                    g_desiredPosition = ClimberPositionConstants.kMaxHeight;
+                }
                 pos = g_desiredPosition;
+
+                System.out.println("Custom up");
 
                 break;
 
             case CUSTOM_DOWN:
                 g_desiredPosition -= 10.0;
+                if(g_desiredPosition < 0.0) {
+                    g_desiredPosition = 0.0;
+                }
                 pos = g_desiredPosition;
+
+                System.out.println("Custom Down");
 
                 break;
 
@@ -94,9 +108,11 @@ public class GlobalVariables extends SubsystemBase{
                 g_desiredPosition = g_currentPosition;
                 pos = g_currentPosition;
 
+                System.out.println("Custom Stop");
                 break;
 
             default:
+                System.out.println("#### BAD VALUE FOR getDesiredElevatorGoal");
                 g_desiredPosition = g_currentPosition;
                 pos = ClimberPositionConstants.kHome;
         }

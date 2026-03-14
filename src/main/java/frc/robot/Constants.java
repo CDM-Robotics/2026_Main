@@ -322,13 +322,13 @@ public class Constants {
     }
 
     public static final class FloorIntakeConstants{
-        public static final double kP = 0.00;
-        public static final double kPReverse = 0.0002;
-        public static final double kI = 0.0;
-        public static final double kD = 0.00;
+        public static final double kP = 0.00;  // Originally 0.0 --> 0.00165
+        public static final double kPReverse = 0.0002;  // Originally 0.0002
+        public static final double kI = 0.0;  // Originally 0.0
+        public static final double kD = 0.000;  // Originally 0.00 -- 0.00075
         public static final double kFF = 0.0;
-        public static final double kV = 0.00205;
-        public static final double kS = .12;   // WAS 0.12
+        public static final double kV = 0.00205;  // Origianlly 0.00205
+        public static final double kS = .12;   // Origianlly 0.12
         public static final boolean kCoralHolderInverted = true;
         public static final double kMinOutput = -1;
         public static final double kMaxOutput = 1;

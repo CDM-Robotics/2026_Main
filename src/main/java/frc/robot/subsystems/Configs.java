@@ -56,7 +56,7 @@ public class Configs {
         static{
                 m_elevatorShooterConfig
                         .disableFollowerMode()
-                        .idleMode(IdleMode.kBrake)
+                        .idleMode(IdleMode.kCoast)
                         .inverted(FloorIntakeConstants.kCoralHolderInverted)
                         .smartCurrentLimit(80)
                         .voltageCompensation(12.0);
@@ -64,6 +64,7 @@ public class Configs {
                         .quadratureAverageDepth(2)
                         .quadratureMeasurementPeriod(10);
                 m_elevatorShooterConfig.closedLoop
+                        //.pid(FloorIntakeConstants.kP, FloorIntakeConstants.kI, FloorIntakeConstants.kD)
                         .pidf(FloorIntakeConstants.kP, FloorIntakeConstants.kI, FloorIntakeConstants.kD, FloorIntakeConstants.kFF)
                         .outputRange(FloorIntakeConstants.kMinOutput, FloorIntakeConstants.kMaxOutput)
                         .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
