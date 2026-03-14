@@ -35,11 +35,12 @@ public class Configs {
                 m_climberSlaveConfig
                         .idleMode(IdleMode.kBrake)
                         .inverted(ClimberPositionConstants.kRightInverted)
-                        .follow(HardwareConstants.kClimberRightCanId, false)
+                        //.follow(HardwareConstants.kClimberRightCanId, false)
+                        .disableFollowerMode()
                         .voltageCompensation(12.0)
                         .smartCurrentLimit(40);
                 m_climberSlaveConfig.closedLoop
-                        .pidf(ClimberPositionConstants.kP, ClimberPositionConstants.kI, ClimberPositionConstants.kD, ClimberPositionConstants.kFF)
+                        .pidf(ClimberPositionConstants.kP + 0.015, ClimberPositionConstants.kI, ClimberPositionConstants.kD, ClimberPositionConstants.kFF)
                         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                         .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput);
                 m_climberSlaveConfig.encoder

@@ -99,7 +99,7 @@ public class Constants {
     public static final class DriveConstants {
         // Driving Parameters - Note that these are not the maximum capable speeds of
         // the robot, rather the allowed maximum speeds
-        public static final double kMaxSpeedMetersPerSecond = 2.8;  // Was 5.6
+        public static final double kMaxSpeedMetersPerSecond = 2.0;  // Was 5.6
         public static final double kMaxAngularSpeed = 0.5 * Math.PI; // Was 2 radians per second
 
         public static final double kDirectionSlewRate = 1.2; // radians per second
@@ -313,7 +313,7 @@ public class Constants {
         public static final double kIntake = 11.0;  // TODO - Maybe account for gear-ratio??? 1:25
         public static final double kHome = 0.0;  // TODO - Maybe account for gear-ratio???  1?25
         public static final double kMaxHeight = 9.25*2000.0/7.75;  // TIMES THE GEAR RATIO
-        public static final double kClimbTarget = 7.25*2000.0/7.75;
+        public static final double kClimbTarget = 1.25*2000.0/7.75;
 
 
         public static final double kS = 0.25;//.233

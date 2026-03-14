@@ -25,7 +25,10 @@ public class ClimberPosition extends SubsystemBase {
 
     // Encoder and controller for elevator control
     private final RelativeEncoder elevatorEncoder;
+    private final RelativeEncoder elevatorEncoderSlave;
+
     private final SparkClosedLoopController elevatorController;
+    private final SparkClosedLoopController elevatorControllerSlave;
 
     // Constraints for trapezoidal motion profile
     private Constraints elevatorConstraints = new Constraints(ClimberPositionConstants.kMaxVel, ClimberPositionConstants.kMaxAccel);
@@ -44,9 +47,13 @@ public class ClimberPosition extends SubsystemBase {
         elevatorEncoder = climberMotor.getEncoder();
         elevatorController = climberMotor.getClosedLoopController();
 
+        elevatorEncoderSlave = climberMotorSlave.getEncoder();
+        elevatorControllerSlave = climberMotorSlave.getClosedLoopController();
+
         // Configure motor settings
         climberMotor.configure(Configs.ClimberConfig.m_climberConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         climberMotorSlave.configure(Configs.ClimberConfig.m_climberSlaveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        
         // Set initial state of setpoints and goal
         resetEncoder();
 
@@ -86,6 +93,8 @@ public class ClimberPosition extends SubsystemBase {
     public boolean killOutput() {
         SmartDashboard.putString("Elevator Output", "Killed");
         elevatorController.setSetpoint(0.01, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+        elevatorControllerSlave.setSetpoint(0.01, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+
         return true;
     }
 
@@ -133,13 +142,13 @@ public class ClimberPosition extends SubsystemBase {
 
         if (resetMode) {
             elevatorController.setSetpoint(-1, ControlType.kVoltage);
-            //elevatorController.setReference(-1, ControlType.kVoltage);
+            elevatorControllerSlave.setSetpoint(-1, ControlType.kVoltage);
         } else {
             // Generate motion profile and update setpoint
             var profile = new TrapezoidProfile(elevatorConstraints).calculate(0.02, setpoint, goal);
             setpoint = profile;
             elevatorController.setSetpoint(setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-            //elevatorController.setReference(setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+            elevatorControllerSlave.setSetpoint(setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
         }
 
         // Update global variables for telemetry
