@@ -7,6 +7,8 @@ import frc.robot.Constants.ClimberPositionConstants;
 public class GlobalVariables extends SubsystemBase{
     public static double m_climberExtension = 0;
     public static double g_climberExtension = 0;
+    public static double g_currentPosition = 0.0;
+    public static double g_desiredPosition = 0.0;
 
     public enum RobotState {
         HOME,
@@ -29,7 +31,11 @@ public class GlobalVariables extends SubsystemBase{
 
     public enum Mode{
         HOME
-        ,EXTEND
+        ,EXTEND,
+        CLIMB,
+        CUSTOM_UP,
+        CUSTOM_DOWN,
+        CUSTOM_STOP
     }
 
     Mode m_mode = Mode.HOME;
@@ -46,18 +52,52 @@ public class GlobalVariables extends SubsystemBase{
         return m_mode;
     }
 
+    public static void setCurrentPosition(double pos) {
+        g_currentPosition = pos;
+    }
+
+    public static double getCurrentPosition() {
+        return g_currentPosition;
+    }
+
     public double getDesiredElevatorGoal() {
-    double pos;
+    double pos = ClimberPositionConstants.kHome;
         switch (getMode()) {
             case HOME:
+                g_desiredPosition = g_currentPosition;
                 pos = ClimberPositionConstants.kHome;
                 break;
 
             case EXTEND:
+                g_desiredPosition = g_currentPosition;
                 pos = ClimberPositionConstants.kMaxHeight;
                 break;
+
+            case CLIMB:
+                g_desiredPosition = g_currentPosition;
+                pos = ClimberPositionConstants.kClimbTarget;
+                break;
                 
+            case CUSTOM_UP:
+                g_desiredPosition += 10.0;
+                pos = g_desiredPosition;
+
+                break;
+
+            case CUSTOM_DOWN:
+                g_desiredPosition -= 10.0;
+                pos = g_desiredPosition;
+
+                break;
+
+            case CUSTOM_STOP:
+                g_desiredPosition = g_currentPosition;
+                pos = g_currentPosition;
+
+                break;
+
             default:
+                g_desiredPosition = g_currentPosition;
                 pos = ClimberPositionConstants.kHome;
         }
 

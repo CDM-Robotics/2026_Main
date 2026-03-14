@@ -130,6 +130,14 @@ public class RobotContainer {
                                                   , new ReadyClimberPosition(m_variables, climber)));
         m_engineerController.rightBumper().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.EXTEND))
                                                   , new ReadyClimberPosition(m_variables, climber)));
+        m_engineerController.leftBumper().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CLIMB))
+                                                  , new ReadyClimberPosition(m_variables, climber)));
+        m_engineerController.povUpLeft().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_UP))
+                                                  , new ReadyClimberPosition(m_variables, climber)));
+        m_engineerController.povDownLeft().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_DOWN))
+                                                  , new ReadyClimberPosition(m_variables, climber)));
+        m_engineerController.povLeft().onFalse(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_STOP))
+                                                  , new ReadyClimberPosition(m_variables, climber)));
         // Dump to human player
         //m_engineerController.b().onTrue(null);
 

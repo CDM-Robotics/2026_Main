@@ -313,6 +313,7 @@ public class Constants {
         public static final double kIntake = 11.0;  // TODO - Maybe account for gear-ratio??? 1:25
         public static final double kHome = 0.0;  // TODO - Maybe account for gear-ratio???  1?25
         public static final double kMaxHeight = 9.25*2000.0/7.75;  // TIMES THE GEAR RATIO
+        public static final double kClimbTarget = 7.25*2000.0/7.75;
 
 
         public static final double kS = 0.25;//.233

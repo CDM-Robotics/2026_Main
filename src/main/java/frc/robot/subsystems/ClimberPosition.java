@@ -127,6 +127,9 @@ public class ClimberPosition extends SubsystemBase {
     // Periodic method for controlling the elevator
     @Override
     public void periodic() {
+        GlobalVariables.setCurrentPosition(elevatorController.getSetpoint());
+        SmartDashboard.putNumber("Climber Position", GlobalVariables.getCurrentPosition());
+
         if (resetMode) {
             elevatorController.setSetpoint(-1, ControlType.kVoltage);
             //elevatorController.setReference(-1, ControlType.kVoltage);
