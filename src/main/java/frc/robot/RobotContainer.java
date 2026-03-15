@@ -173,10 +173,24 @@ public class RobotContainer {
 
     public void scheduleTrajectory(String trajectory) {
         Command traj = m_DriveTrain.buildTrajectory(trajectory, new PIDController(6.0, 0.0, 0.3));
-
+        SequentialCommandGroup scg = null;
         if(traj != null) {
-            SequentialCommandGroup scg = new SequentialCommandGroup(new WaitCommand(1.0), traj);
-            CommandScheduler.getInstance().schedule(scg);
+            if (trajectory.contains("Shoot")){
+             scg = new SequentialCommandGroup(
+                        new WaitCommand(1.0), 
+                        traj, 
+                        new InstantCommand(() -> floorIntake.setSetpoint(-2000)).withTimeout(1.0) , 
+                        new InstantCommand(() -> hopper.setSetpoint(-10000) ).withTimeout(1.0),
+                        new WaitCommand(5.0),
+                        new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), 
+                        new InstantCommand(() -> hopper.setSetpoint(0)).withTimeout(1.0) );
+            } else {
+               scg = new SequentialCommandGroup(new WaitCommand(1.0), traj); 
+            }
+            if (scg != null){
+                CommandScheduler.getInstance().schedule(scg);
+            }
+            
         }
     }
 }

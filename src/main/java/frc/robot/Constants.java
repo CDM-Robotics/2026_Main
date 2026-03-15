@@ -99,12 +99,12 @@ public class Constants {
     public static final class DriveConstants {
         // Driving Parameters - Note that these are not the maximum capable speeds of
         // the robot, rather the allowed maximum speeds
-        public static final double kMaxSpeedMetersPerSecond = 2.0;  // Was 5.6
-        public static final double kMaxAngularSpeed = 0.5 * Math.PI; // Was 2 radians per second
+        public static final double kMaxSpeedMetersPerSecond = 1.8;  // Was 5.6
+        public static final double kMaxAngularSpeed = 0.4 * Math.PI; // Was 2 radians per second
 
         public static final double kDirectionSlewRate = 1.2; // radians per second
         public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
-        public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
+        public static final double kRotationalSlewRate = 1.8; // percent per second (1 = 100%)
 
         // Chassis configuration
         public static final double kTrackWidth = Units.inchesToMeters(20.5);
@@ -215,7 +215,7 @@ public class Constants {
         public static final int kEngineerControllerPort = 1;
         public static final double kDriveDeadband = 0.05;
         public static final double kSuperSlow = 0.05;
-        public static final double kMildSlow = 0.25;
+        public static final double kMildSlow = 0.50;
     }
 
  
@@ -297,10 +297,10 @@ public class Constants {
     public static final class ClimberPositionConstants {
         public static final boolean kLeftInverted = true;
         public static final boolean kRightInverted = false;
-        public static final double kP = 0.05;
+        public static final double kP = 0.5; // Originally 0.05
         public static final double kI = 0.0;
-        public static final double kD = 0.01;
-        public static final double kFF = 0.0;
+        public static final double kD = 0.1; // Originally 0.01
+        public static final double kFF = 12.0/5767.0; // Originally 0.0
         public static final double kMinOutput = -1.1;
         public static final double kMaxOutput = 1.1;
 
