@@ -297,9 +297,9 @@ public class Constants {
     public static final class ClimberPositionConstants {
         public static final boolean kLeftInverted = true;
         public static final boolean kRightInverted = false;
-        public static final double kP = 0.5; // Originally 0.05
+        public static final double kP = 0.25; // Originally 0.05
         public static final double kI = 0.0;
-        public static final double kD = 0.1; // Originally 0.01
+        public static final double kD = 0.05; // Originally 0.01
         public static final double kFF = 12.0/5767.0; // Originally 0.0
         public static final double kMinOutput = -1.1;
         public static final double kMaxOutput = 1.1;
