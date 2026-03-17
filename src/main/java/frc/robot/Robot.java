@@ -32,10 +32,10 @@ public class Robot extends TimedRobot {
    */
   public Robot() {
     m_chooser.setDefaultOption("DO NOTHING", "HALT");
-    m_chooser.addOption("Square Dance", "SquareDance");
     m_chooser.addOption("Right-Side Shoot Only", "RightSideShootOnly");
     m_chooser.addOption("Center Shoot Only", "CenterShootOnly");
     m_chooser.addOption("Left-Side Shoot Only", "LeftSideShootOnly");
+    m_chooser.addOption("Square Dance", "SquareDance");
 
     SmartDashboard.putData("AUTO", m_chooser);
     SmartDashboard.putNumber("NavX Yaw Rate", 0.0);
@@ -83,14 +83,14 @@ public class Robot extends TimedRobot {
       return;
     }
 
-    if (alliance == Alliance.Red) {
-      String toRun = routine.concat("Red");
-      m_rc.setResetInitialPose(new Pose2d(15.6, 7.0, new Rotation2d(180.0)));
-      m_rc.scheduleTrajectory(toRun);
+    m_rc.scheduleTrajectory(routine);
+
+/*     if (alliance == Alliance.Red) {
+      String flippedTraj = routine.concat("Red");
+      m_rc.scheduleTrajectory(flippedTraj);
     } else {
-      m_rc.setResetInitialPose(new Pose2d(1.0, 1.0, new Rotation2d(0.0)));
       m_rc.scheduleTrajectory(routine);
-    }
+    }  */
 
     m_rc.m_DriveTrain.setGyroBias(SmartDashboard.getNumber("Steering Bias", Constants.HardwareConstants.kDefaultGyroBias));
   }

@@ -172,7 +172,7 @@ public class RobotContainer {
     }
 
     public void scheduleTrajectory(String trajectory) {
-        Command traj = m_DriveTrain.buildTrajectory(trajectory, new PIDController(6.0, 0.0, 0.3));
+        Command traj = m_DriveTrain.buildTrajectory(trajectory, new PIDController(6.0, 0.0, 0.3), true);
         SequentialCommandGroup scg = null;
         if(traj != null) {
             if (trajectory.contains("Shoot")){
