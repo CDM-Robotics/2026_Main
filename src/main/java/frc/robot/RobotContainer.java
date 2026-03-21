@@ -122,6 +122,10 @@ public class RobotContainer {
         m_engineerController.x().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-2000)).withTimeout(1.0) , new InstantCommand(() -> hopper.setSetpoint(-10000) )));
         m_engineerController.x().onFalse(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(0))));
 
+        // Dump out load Intake
+        m_engineerController.b().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(2000)).withTimeout(1.0) , new InstantCommand(() -> hopper.setSetpoint(10000) )));
+        m_engineerController.b().onFalse(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(0))));
+
         // Shoot
         m_engineerController.y().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-4000)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(4000))));
         m_engineerController.y().onFalse(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(0))));
