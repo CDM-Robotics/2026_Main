@@ -113,6 +113,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_rc.m_DriveTrain.setGyroBias(SmartDashboard.getNumber("Steering Bias", Constants.HardwareConstants.kDefaultGyroBias));
+    m_rc.forceShooterOff();;
   }
 
   /** This function is called periodically during operator control. */

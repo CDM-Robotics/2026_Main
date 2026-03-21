@@ -177,7 +177,7 @@ public class RobotContainer {
         if(traj != null) {
             if (trajectory.contains("Shoot")){
              scg = new SequentialCommandGroup(
-                        new WaitCommand(1.0), 
+                    //    new WaitCommand(1.0), 
                         traj, 
                         new InstantCommand(() -> m_DriveTrain.stopModules()),
                         new InstantCommand(() -> floorIntake.setSetpoint(-4000)).withTimeout(1.0) , 
@@ -193,5 +193,9 @@ public class RobotContainer {
             }
             
         }
+    }
+
+    public void forceShooterOff() {
+        CommandScheduler.getInstance().schedule(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(0))));
     }
 }
