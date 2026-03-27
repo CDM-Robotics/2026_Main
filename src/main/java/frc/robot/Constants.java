@@ -93,7 +93,7 @@ public class Constants {
         public static final int kHopperCanId = 13;
     
         public static final double kBumperDistance = Units.inchesToMeters(16.0);
-        public static final double kDefaultGyroBias = 0.0025;
+        public static final double kDefaultGyroBias = 0.0035;  // Was 0.0025
     }
 
     public static final class DriveConstants {
@@ -325,7 +325,7 @@ public class Constants {
         public static final double kP = 0.00;  // Originally 0.0 --> 0.00165
         public static final double kPReverse = 0.0002;  // Originally 0.0002
         public static final double kI = 0.0;  // Originally 0.0
-        public static final double kD = 0.000;  // Originally 0.00 -- 0.00075
+        public static final double kD = 0.00;  // Originally 0.00 -- 0.00075
         public static final double kFF = 0.0;
         public static final double kV = 0.00205;  // Origianlly 0.00205
         public static final double kS = .12;   // Origianlly 0.12
