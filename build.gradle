@@ -55,12 +55,21 @@ wpi.java.runSimWithDebugJni = false
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
+// TritonTech Custom Addition
+repositories {
+    mavenLocal()
+}
+
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 5.
 dependencies {
     annotationProcessor wpi.java.deps.wpilibAnnotations()
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
+
+    // Triton Tech Core Addition. Pinned to 2.x: 2.x is the WPILib 2027 / SystemCore line,
+    // 1.x is 2026 / roboRIO and won't link against this project.
+    implementation 'org.tritontech:TritonTechCore:2.+'
 
     systemcoreDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.systemcore)
     systemcoreDebug wpi.java.vendor.jniDebug(wpi.platforms.systemcore)
