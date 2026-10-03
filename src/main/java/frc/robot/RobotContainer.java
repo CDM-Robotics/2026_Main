@@ -95,7 +95,8 @@ public class RobotContainer {
                                              new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate),
                                              new SlewRateLimiter(DriveConstants.kRotationalSlewRate),
                                              myVision,
-                                             null);
+                                             null,
+                                             HardwareConstants.kImuMountOrientation);
 
     CommandXboxController m_driverController; // Initialized by DriveTrain
     CommandXboxController m_engineerController = new CommandXboxController(OIConstants.kEngineerControllerPort);
@@ -104,6 +105,8 @@ public class RobotContainer {
     public final Hopper hopper = new Hopper();
 
     public RobotContainer() {
+        m_DriveTrain.setGyroInverted(HardwareConstants.kGyroInverted);
+
         m_DriveTrain.setChassisConstants(DriveConstants.kTrackWidth, 
                                          HardwareConstants.kBumperDistance);
 

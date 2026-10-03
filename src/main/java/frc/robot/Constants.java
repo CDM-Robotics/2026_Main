@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import org.wpilib.fields.Field;
 import org.wpilib.fields.Fields;
 import org.wpilib.hardware.bus.CANPort;
+import org.wpilib.hardware.imu.OnboardIMU.MountOrientation;
 import org.wpilib.math.linalg.VecBuilder;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Pose3d;
@@ -73,6 +74,14 @@ public class Constants {
     public static final class HardwareConstants{
         // SystemCore has several CAN buses; everything on this robot is on the first one
         public static final CANPort kCanBus = CANPort.CAN_S0;
+
+        // SystemCore's built-in IMU replaces the NavX. Only the mounting plane matters for yaw:
+        // FLAT = lying flat, LANDSCAPE = standing on its long edge, PORTRAIT = on its short edge.
+        // Check on the robot: the dashboard "Angle" must INCREASE when the robot turns
+        // counter-clockwise (seen from above). If it decreases (e.g. SystemCore mounted label-down),
+        // set kGyroInverted = true.
+        public static final MountOrientation kImuMountOrientation = MountOrientation.FLAT;
+        public static final boolean kGyroInverted = false;
 
         // SPARK MAX CAN IDs 
         public static final int kFrontLeftDrivingCanId = 3;
