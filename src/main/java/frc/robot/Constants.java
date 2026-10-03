@@ -93,9 +93,6 @@ public class Constants {
         public static final int kRearRightDrivingCanId = 7;
         public static final int kRearRightTurningCanId = 6;
 
-        public static final int kClimberRightCanId = 14;
-        public static final int kClimberLeftCanId = 15;
-
         public static final int kFloorIntakeCanId = 12;
         public static final int kHopperCanId = 13;
     
@@ -303,34 +300,6 @@ public class Constants {
         // Constraint for the motion profiled robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
-    }
-
-    public static final class ClimberPositionConstants {
-        public static final boolean kLeftInverted = true;
-        public static final boolean kRightInverted = false;
-        // Tuned in kConversionFactor units; Configs scales them to motor rotations for REVLib 2027
-        public static final double kP = 0.25; // Originally 0.05
-        public static final double kI = 0.0;
-        public static final double kD = 0.05; // Originally 0.01
-        public static final double kFF = 12.0/5767.0; // Originally 0.0
-        public static final double kMinOutput = -1.1;
-        public static final double kMaxOutput = 1.1;
-
-        public static final double kGearRatio = 18.0 / 22.0;
-        public static final double kConversionFactor = Math.PI * (1.0 + 3.0/8.0) * kGearRatio;  // For a 11/8" diameter hub  (pi * d)
-        public static final double kMaxVel = 2000.0 * 1.25 / kConversionFactor;
-        public static final double kMaxAccel = 1000.0 * 1.25 / kConversionFactor;
-        public static final double kTolerance = 2.0;
-        
-        public static final double kIntake = 11.0;  // TODO - Maybe account for gear-ratio??? 1:25
-        public static final double kHome = 0.0;  // TODO - Maybe account for gear-ratio???  1?25
-        public static final double kMaxHeight = 8.50*2000.0/7.75;  // TIMES THE GEAR RATIO
-        public static final double kClimbTarget = 1.25*2000.0/7.75;
-
-
-        public static final double kS = 0.25;//.233
-        public static final double kV = 0.045;//.045
-        public static final double kG = 0.35;//.01
     }
 
     public static final class FloorIntakeConstants{

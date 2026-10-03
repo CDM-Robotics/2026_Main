@@ -18,17 +18,12 @@ import frc.robot.Constants.MAXSwerveModule;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.GlobalVariables.*;
 import frc.robot.subsystems.FloorIntake;
 import frc.robot.subsystems.Hopper;
 
 public class RobotContainer {
     Vision myVision = null;
 
-    public final GlobalVariables m_variables = new GlobalVariables();
-
-    // The climber was permanently removed from the robot, so ClimberPosition (SPARK MAX CAN IDs
-    // 14/15) is no longer created and its engineer-controller bindings are gone.
 
     SwerveModule frontLeft = new SwerveModule(HardwareConstants.kCanBus,
                                               HardwareConstants.kFrontLeftDrivingCanId, 
