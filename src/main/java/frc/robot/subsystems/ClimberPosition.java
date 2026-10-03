@@ -1,15 +1,16 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkLowLevel.ControlType;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import org.wpilib.math.trajectory.TrapezoidProfile;
 import org.wpilib.math.trajectory.TrapezoidProfile.Constraints;
-import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.telemetry.Telemetry;
 import org.wpilib.command2.SubsystemBase;
 
 import frc.robot.Constants.ClimberPositionConstants;
@@ -40,8 +41,8 @@ public class ClimberPosition extends SubsystemBase {
 
     public ClimberPosition() {
         // Initialize elevator motors
-        climberMotor = new SparkMax(HardwareConstants.kClimberRightCanId, SparkMax.MotorType.kBrushless);
-        climberMotorSlave = new SparkMax(HardwareConstants.kClimberLeftCanId, SparkMax.MotorType.kBrushless);
+        climberMotor = new SparkMax(HardwareConstants.kCanBus, HardwareConstants.kClimberRightCanId, MotorType.kBrushless);
+        climberMotorSlave = new SparkMax(HardwareConstants.kCanBus, HardwareConstants.kClimberLeftCanId, MotorType.kBrushless);
 
         // Initialize encoder and controller
         elevatorEncoder = climberMotor.getEncoder();
@@ -59,14 +60,25 @@ public class ClimberPosition extends SubsystemBase {
 
     }
 
+    // REVLib 2027 removed encoder conversion factors: the encoder and closed-loop setpoints are in
+    // motor rotations. Positions in this class (and in ClimberPositionConstants) stay in
+    // kConversionFactor units, converted here at the boundary.
+    private static double toRotations(double position) {
+        return position / ClimberPositionConstants.kConversionFactor;
+    }
+
+    private static double fromRotations(double rotations) {
+        return rotations * ClimberPositionConstants.kConversionFactor;
+    }
+
     // Returns the current elevator position
     public double getPosition() {
-        return elevatorEncoder.getPosition();
+        return fromRotations(elevatorEncoder.getPosition().get());
     }
 
     // Gets the current drawn by the right motor
     public double getClimberCurrent() {
-        return climberMotor.getOutputCurrent();
+        return climberMotor.getOutputCurrent().get();
     }
     
     
@@ -86,14 +98,14 @@ public class ClimberPosition extends SubsystemBase {
             pos = 0.0;
         }
 
-        SmartDashboard.putNumber("Elevator Position", pos);
+        Telemetry.log("Elevator Position", pos);
         return (Math.abs(pos - getGoal()) < ClimberPositionConstants.kTolerance);
     }
 
     public boolean killOutput() {
-        SmartDashboard.putString("Elevator Output", "Killed");
-        elevatorController.setSetpoint(0.01, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-        elevatorControllerSlave.setSetpoint(0.01, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+        Telemetry.log("Elevator Output", "Killed");
+        elevatorController.setSetpoint(toRotations(0.01), ControlType.kPosition, ClosedLoopSlot.kSlot0);
+        elevatorControllerSlave.setSetpoint(toRotations(0.01), ControlType.kPosition, ClosedLoopSlot.kSlot0);
 
         return true;
     }
@@ -105,7 +117,7 @@ public class ClimberPosition extends SubsystemBase {
         inputs.m_elevatorCurrent = getClimberCurrent();
         inputs.m_elevatorInPosition = inPosition();
         inputs.m_elevatorSetpoint = setpoint.position;
-        inputs.m_climberVoltage = climberMotor.getBusVoltage();
+        inputs.m_climberVoltage = climberMotor.getBusVoltage().get();
     }
 
     // Sets a new goal for the elevator position
@@ -114,7 +126,7 @@ public class ClimberPosition extends SubsystemBase {
 
         setpoint = new TrapezoidProfile.State(getPosition(), 0);
         goal = new TrapezoidProfile.State(p_elevatorGoal, 0);
-        SmartDashboard.putString("Elevator Output", "Active");
+        Telemetry.log("Elevator Output", "Active");
     }
 
     // Resets the encoder and motion profile states
@@ -136,9 +148,9 @@ public class ClimberPosition extends SubsystemBase {
     // Periodic method for controlling the elevator
     @Override
     public void periodic() {
-        GlobalVariables.setCurrentPosition(elevatorController.getSetpoint());
-        SmartDashboard.putNumber("Climber Current Position", GlobalVariables.getCurrentPosition());
-        SmartDashboard.putNumber("Climber Desired Position", GlobalVariables.getDesiredPosition());
+        GlobalVariables.setCurrentPosition(fromRotations(elevatorController.getSetpoint().get()));
+        Telemetry.log("Climber Current Position", GlobalVariables.getCurrentPosition());
+        Telemetry.log("Climber Desired Position", GlobalVariables.getDesiredPosition());
 
         if (resetMode) {
             elevatorController.setSetpoint(-1, ControlType.kVoltage);
@@ -147,8 +159,8 @@ public class ClimberPosition extends SubsystemBase {
             // Generate motion profile and update setpoint
             var profile = new TrapezoidProfile(elevatorConstraints).calculate(0.02, setpoint, goal);
             setpoint = profile;
-            elevatorController.setSetpoint(setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-            elevatorControllerSlave.setSetpoint(setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+            elevatorController.setSetpoint(toRotations(setpoint.position), ControlType.kPosition, ClosedLoopSlot.kSlot0);
+            elevatorControllerSlave.setSetpoint(toRotations(setpoint.position), ControlType.kPosition, ClosedLoopSlot.kSlot0);
         }
 
         // Update global variables for telemetry

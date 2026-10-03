@@ -2,15 +2,15 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkLowLevel.ControlType;
+import com.revrobotics.PersistMode;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import org.wpilib.math.controller.SimpleMotorFeedforward;
 
-import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.telemetry.Telemetry;
 import org.wpilib.command2.SubsystemBase;
 import frc.robot.subsystems.Configs;
 import frc.robot.subsystems.Configs.FloorIntakeConfig;
@@ -37,7 +37,7 @@ public class Hopper extends SubsystemBase {
     
 
     public Hopper() {
-        elevatorShooterMotor = new SparkMax(Constants.HardwareConstants.kHopperCanId, MotorType.kBrushless);
+        elevatorShooterMotor = new SparkMax(Constants.HardwareConstants.kCanBus, Constants.HardwareConstants.kHopperCanId, MotorType.kBrushless);
 
         //initialize PID controller
         m_elevatorShooterController = elevatorShooterMotor.getClosedLoopController();
@@ -73,7 +73,7 @@ public class Hopper extends SubsystemBase {
     }
 
     public double getVelocity(){
-        return m_shooterEncoder.getVelocity();
+        return m_shooterEncoder.getVelocity().get();
     }
 
     public void updateInputs(ElevatorShooterIOInputs inputs){
@@ -89,7 +89,7 @@ public class Hopper extends SubsystemBase {
     }
 
     public double getCurrent() {
-        return elevatorShooterMotor.getOutputCurrent();
+        return elevatorShooterMotor.getOutputCurrent().get();
     }
 
 }

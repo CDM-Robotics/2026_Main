@@ -32,7 +32,8 @@ public class RobotContainer {
 
     //final ClimberPosition climber = new ClimberPosition();
 
-    SwerveModule frontLeft = new SwerveModule(HardwareConstants.kFrontLeftDrivingCanId, 
+    SwerveModule frontLeft = new SwerveModule(HardwareConstants.kCanBus,
+                                              HardwareConstants.kFrontLeftDrivingCanId, 
                                               MotorControllerType.SPARK_FLEX, 
                                               MotorControllerType.SPARK_FLEX, 
                                               HardwareConstants.kFrontLeftTurningCanId, 
@@ -42,9 +43,11 @@ public class RobotContainer {
                                               MAXSwerveModule.turningConfig, 
                                               new SimpleMotorFeedforward(ModuleConstants.kDrivingS, 
                                                                         ModuleConstants.kDrivingV, 
-                                                                        ModuleConstants.kDrivingA));
+                                                                        ModuleConstants.kDrivingA),
+                                              ModuleConstants.kDrivingEncoderPositionFactor);
 
-    SwerveModule frontRight = new SwerveModule(HardwareConstants.kFrontRightDrivingCanId, 
+    SwerveModule frontRight = new SwerveModule(HardwareConstants.kCanBus,
+                                              HardwareConstants.kFrontRightDrivingCanId, 
                                               MotorControllerType.SPARK_FLEX, 
                                               MotorControllerType.SPARK_FLEX, 
                                               HardwareConstants.kFrontRightTurningCanId, 
@@ -54,9 +57,11 @@ public class RobotContainer {
                                               MAXSwerveModule.turningConfig, 
                                               new SimpleMotorFeedforward(ModuleConstants.kDrivingS, 
                                                                         ModuleConstants.kDrivingV, 
-                                                                        ModuleConstants.kDrivingA));
+                                                                        ModuleConstants.kDrivingA),
+                                              ModuleConstants.kDrivingEncoderPositionFactor);
 
-    SwerveModule rearLeft = new SwerveModule(HardwareConstants.kRearLeftDrivingCanId, 
+    SwerveModule rearLeft = new SwerveModule(HardwareConstants.kCanBus,
+                                              HardwareConstants.kRearLeftDrivingCanId, 
                                              MotorControllerType.SPARK_FLEX, 
                                              MotorControllerType.SPARK_FLEX, 
                                              HardwareConstants.kRearLeftTurningCanId, 
@@ -66,8 +71,10 @@ public class RobotContainer {
                                              MAXSwerveModule.turningConfig, 
                                              new SimpleMotorFeedforward(ModuleConstants.kDrivingS, 
                                                                         ModuleConstants.kDrivingV, 
-                                                                        ModuleConstants.kDrivingA));
-    SwerveModule rearRight = new SwerveModule(HardwareConstants.kRearRightDrivingCanId, 
+                                                                        ModuleConstants.kDrivingA),
+                                              ModuleConstants.kDrivingEncoderPositionFactor);
+    SwerveModule rearRight = new SwerveModule(HardwareConstants.kCanBus,
+                                              HardwareConstants.kRearRightDrivingCanId, 
                                               MotorControllerType.SPARK_FLEX, 
                                               MotorControllerType.SPARK_FLEX, 
                                               HardwareConstants.kRearRightTurningCanId, 
@@ -77,7 +84,8 @@ public class RobotContainer {
                                               MAXSwerveModule.turningConfig, 
                                               new SimpleMotorFeedforward(ModuleConstants.kDrivingS, 
                                                                         ModuleConstants.kDrivingV, 
-                                                                        ModuleConstants.kDrivingA));  
+                                                                        ModuleConstants.kDrivingA),
+                                              ModuleConstants.kDrivingEncoderPositionFactor);  
                                                                         
     public final DriveTrain m_DriveTrain = new DriveTrain(frontLeft,
                                              frontRight,
@@ -112,7 +120,7 @@ public class RobotContainer {
 
     private void configureButtionBindings() {
         // The DriveTrain comes with the following buttons pre-defined, override here, if you wish
-        // back().onTrue -- resets the throttle
+        // view().onTrue -- resets the throttle (was back() before WPILib 2027)
         // rightBumper().onTrue -- sets throttle factor to bumperFactor
         // rightBumper().onFalse -- resets throttle factor to 1.0
         // rightTrigger().onTrue -- sets throttle factor to triggerFactor
@@ -136,13 +144,13 @@ public class RobotContainer {
                                                   , new ReadyClimberPosition(m_variables, climber)));
         m_engineerController.leftBumper().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CLIMB))
                                                   , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.povUp().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_UP))
+        m_engineerController.dpadUp().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_UP))
                                                   , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.povDown().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_DOWN))
+        m_engineerController.dpadDown().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_DOWN))
                                                   , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.povUp().onFalse(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_STOP))
+        m_engineerController.dpadUp().onFalse(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_STOP))
                                                   , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.povDown().onFalse(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_STOP))
+        m_engineerController.dpadDown().onFalse(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_STOP))
                                                   , new ReadyClimberPosition(m_variables, climber)));
         // Dump to human player
         //m_engineerController.b().onTrue(null);

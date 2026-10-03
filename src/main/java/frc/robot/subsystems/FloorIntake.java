@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkLowLevel.ControlType;
 import com.revrobotics.PersistMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.ResetMode;
@@ -10,7 +10,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import org.wpilib.math.controller.SimpleMotorFeedforward;
 
-import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.telemetry.Telemetry;
 import org.wpilib.command2.SubsystemBase;
 import frc.robot.subsystems.Configs;
 import frc.robot.subsystems.Configs.FloorIntakeConfig;
@@ -38,7 +38,7 @@ public class FloorIntake extends SubsystemBase {
     
 
     public FloorIntake() {
-        intakeShooterMotor = new SparkMax(Constants.HardwareConstants.kFloorIntakeCanId, MotorType.kBrushless);
+        intakeShooterMotor = new SparkMax(Constants.HardwareConstants.kCanBus, Constants.HardwareConstants.kFloorIntakeCanId, MotorType.kBrushless);
 
         //initialize PID controller
         m_intakeShooterController = intakeShooterMotor.getClosedLoopController();
@@ -74,7 +74,7 @@ public class FloorIntake extends SubsystemBase {
     }
 
     public double getVelocity(){
-        return m_shooterEncoder.getVelocity();
+        return m_shooterEncoder.getVelocity().get();
     }
 
     public void updateInputs(ElevatorShooterIOInputs inputs){
@@ -90,7 +90,7 @@ public class FloorIntake extends SubsystemBase {
     }
 
     public double getCurrent() {
-        return intakeShooterMotor.getOutputCurrent();
+        return intakeShooterMotor.getOutputCurrent().get();
     }
 
 }

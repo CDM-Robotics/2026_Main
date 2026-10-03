@@ -22,14 +22,16 @@ public class Configs {
                         .disableFollowerMode()
                         .voltageCompensation(12.0)
                         .smartCurrentLimit(40);
+                // REVLib 2027: no encoder conversion factor, so the controller works in motor
+                // rotations. Gains are scaled from kConversionFactor units (ClimberPosition converts
+                // positions/setpoints). kFF is dropped: feedforward kV isn't applied in position mode.
+                // uvwAverageDepth/uvwMeasurementPeriod no longer exist in REVLib 2027.
                 m_climberConfig.closedLoop
-                        .pidf(ClimberPositionConstants.kP, ClimberPositionConstants.kI, ClimberPositionConstants.kD, ClimberPositionConstants.kFF)
+                        .pid(ClimberPositionConstants.kP * ClimberPositionConstants.kConversionFactor,
+                             ClimberPositionConstants.kI * ClimberPositionConstants.kConversionFactor,
+                             ClimberPositionConstants.kD * ClimberPositionConstants.kConversionFactor)
                         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                         .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput);
-                m_climberConfig.encoder
-                        .uvwAverageDepth(2)
-                        .uvwMeasurementPeriod(10)
-                        .positionConversionFactor(ClimberPositionConstants.kConversionFactor);
                 m_climberConfig.limitSwitch.forwardLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor).reverseLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor);
 
                 m_climberSlaveConfig
@@ -40,13 +42,11 @@ public class Configs {
                         .voltageCompensation(12.0)
                         .smartCurrentLimit(40);
                 m_climberSlaveConfig.closedLoop
-                        .pidf(ClimberPositionConstants.kP + 0.015, ClimberPositionConstants.kI, ClimberPositionConstants.kD, ClimberPositionConstants.kFF)
+                        .pid((ClimberPositionConstants.kP + 0.015) * ClimberPositionConstants.kConversionFactor,
+                             ClimberPositionConstants.kI * ClimberPositionConstants.kConversionFactor,
+                             ClimberPositionConstants.kD * ClimberPositionConstants.kConversionFactor)
                         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                         .outputRange(ClimberPositionConstants.kMinOutput, ClimberPositionConstants.kMaxOutput);
-                m_climberSlaveConfig.encoder
-                        .uvwAverageDepth(2)
-                        .uvwMeasurementPeriod(10)
-                        .positionConversionFactor(ClimberPositionConstants.kConversionFactor);
                 m_climberSlaveConfig.limitSwitch.forwardLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor).reverseLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor);
         }
     }
@@ -66,12 +66,13 @@ public class Configs {
                         .quadratureMeasurementPeriod(10);
                 m_elevatorShooterConfig.closedLoop
                         //.pid(FloorIntakeConstants.kP, FloorIntakeConstants.kI, FloorIntakeConstants.kD)
-                        .pidf(FloorIntakeConstants.kP, FloorIntakeConstants.kI, FloorIntakeConstants.kD, FloorIntakeConstants.kFF)
+                        .pid(FloorIntakeConstants.kP, FloorIntakeConstants.kI, FloorIntakeConstants.kD) // kFF is 0
                         .outputRange(FloorIntakeConstants.kMinOutput, FloorIntakeConstants.kMaxOutput)
                         .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+                // REVLib 2027 has no limit-switch enable flag; "keep moving" is the equivalent of disabled
                 m_elevatorShooterConfig.limitSwitch
-                        .forwardLimitSwitchEnabled(false)
-                        .reverseLimitSwitchEnabled(false);
+                        .forwardLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor)
+                        .reverseLimitSwitchTriggerBehavior(Behavior.kKeepMovingMotor);
         }
     }
 }

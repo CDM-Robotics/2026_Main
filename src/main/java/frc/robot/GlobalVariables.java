@@ -1,6 +1,6 @@
 package frc.robot;
 
-import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.telemetry.Telemetry;
 import org.wpilib.command2.SubsystemBase;
 import frc.robot.Constants.ClimberPositionConstants;
 
@@ -122,7 +122,7 @@ public class GlobalVariables extends SubsystemBase{
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("RobotState", getRobotState().toString());
-        SmartDashboard.putString("mode", getMode().toString());
+        Telemetry.log("RobotState", getRobotState().toString());
+        Telemetry.log("mode", getMode().toString());
     }
 }

@@ -13,8 +13,10 @@ import org.wpilib.driverstation.MatchType;
 import org.wpilib.driverstation.DriverStationErrors;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.framework.TimedRobot;
-import org.wpilib.smartdashboard.SendableChooser;
-import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.telemetry.Telemetry;
+import org.wpilib.tunable.Selectable;
+import org.wpilib.tunable.TunableDouble;
+import org.wpilib.tunable.Tunables;
 import org.wpilib.command2.CommandScheduler;
 
 /**
@@ -26,7 +28,10 @@ public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  // WPILib 2027 replaced SendableChooser/SmartDashboard.getNumber with tunables
+  private final Selectable<String> m_chooser = new Selectable<>();
+  private final TunableDouble m_steeringBias =
+      Tunables.addDouble("Steering Bias", Constants.HardwareConstants.kDefaultGyroBias);
 
   private final RobotContainer m_rc;
 
@@ -35,17 +40,15 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
-    m_chooser.setDefaultOption("DO NOTHING", "HALT");
-    m_chooser.addOption("Right-Side Shoot Only", "RightSideShootOnly");
-    m_chooser.addOption("Center Shoot Only", "CenterShootOnly");
-    m_chooser.addOption("Left-Side Shoot Only", "LeftSideShootOnly");
-    m_chooser.addOption("Square Dance", "SquareDance");
+    m_chooser.addDefault("DO NOTHING", "HALT");
+    m_chooser.add("Right-Side Shoot Only", "RightSideShootOnly");
+    m_chooser.add("Center Shoot Only", "CenterShootOnly");
+    m_chooser.add("Left-Side Shoot Only", "LeftSideShootOnly");
+    m_chooser.add("Square Dance", "SquareDance");
 
-    SmartDashboard.putData("AUTO", m_chooser);
-    SmartDashboard.putNumber("NavX Yaw Rate", 0.0);
-    SmartDashboard.putNumber("Steering Bias", Constants.HardwareConstants.kDefaultGyroBias);
-    SmartDashboard.putNumber("Climber Current Position", GlobalVariables.getCurrentPosition());
-    SmartDashboard.putNumber("Climber Desired Position", GlobalVariables.getDesiredPosition());
+    Tunables.publish("AUTO", m_chooser);
+    Telemetry.log("Climber Current Position", GlobalVariables.getCurrentPosition());
+    Telemetry.log("Climber Desired Position", GlobalVariables.getDesiredPosition());
 
     m_rc = new RobotContainer();
     m_rc.subsystemInit();
@@ -96,7 +99,7 @@ public class Robot extends TimedRobot {
       m_rc.scheduleTrajectory(routine);
     }  */
 
-    m_rc.m_DriveTrain.setGyroBias(SmartDashboard.getNumber("Steering Bias", Constants.HardwareConstants.kDefaultGyroBias));
+    m_rc.m_DriveTrain.setGyroBias(m_steeringBias.get());
   }
 
   /** This function is called periodically during autonomous. */
@@ -116,7 +119,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    m_rc.m_DriveTrain.setGyroBias(SmartDashboard.getNumber("Steering Bias", Constants.HardwareConstants.kDefaultGyroBias));
+    m_rc.m_DriveTrain.setGyroBias(m_steeringBias.get());
     m_rc.forceShooterOff();;
   }
 

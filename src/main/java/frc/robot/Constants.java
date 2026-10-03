@@ -9,9 +9,9 @@ import java.util.List;
 import com.revrobotics.spark.config.FeedForwardConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import org.wpilib.vision.apriltag.AprilTag;
-import org.wpilib.vision.apriltag.AprilTagFieldLayout;
-import org.wpilib.vision.apriltag.AprilTagFields;
+import org.wpilib.fields.Field;
+import org.wpilib.fields.Fields;
+import org.wpilib.hardware.bus.CANPort;
 import org.wpilib.math.linalg.VecBuilder;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Pose3d;
@@ -34,20 +34,18 @@ public class Constants {
         public static final SparkMaxConfig turningConfig = new SparkMaxConfig();
 
         static {
-            double turningFactor = 2 * Math.PI;
-
             drivingConfig
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
-            drivingConfig.encoder
-                    .positionConversionFactor(ModuleConstants.kDrivingEncoderPositionFactor) // meters
-                    .velocityConversionFactor(ModuleConstants.kDrivingEncoderVelocityFactor); // meters per second
+            // REVLib 2027 has no encoder conversion factors: the driving encoder reports motor
+            // rotations / RPM and TritonTechCore's SwerveModule converts using
+            // ModuleConstants.kDrivingEncoderPositionFactor.
             drivingConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     // These are example gains you may need to them for your own robot!
                     .pid(ModuleConstants.kDrivingP, ModuleConstants.kDrivingI, ModuleConstants.kDrivingD)
-                    .velocityFF(ModuleConstants.kDrivingFF)
                     .outputRange(ModuleConstants.kDrivingMinOutput, ModuleConstants.kDrivingMaxOutput);
+            drivingConfig.closedLoop.feedForward.kV(ModuleConstants.kDrivingFF);
             drivingConfig.voltageCompensation(12.0);
 
             turningConfig
@@ -56,9 +54,7 @@ public class Constants {
             turningConfig.absoluteEncoder
                     // Invert the turning encoder, since the output shaft rotates in the opposite
                     // direction of the steering motor in the MAXSwerve Module.
-                    .inverted(ModuleConstants.kTurningEncoderInverted)
-                    .positionConversionFactor(ModuleConstants.kTurningEncoderPositionFactor) // radians
-                    .velocityConversionFactor(ModuleConstants.kTurningEncoderVelocityFactor); // radians per second
+                    .inverted(ModuleConstants.kTurningEncoderInverted); // reports rotations; SwerveModule converts to radians
             turningConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                     // These are example gains you may need to them for your own robot!
@@ -67,15 +63,17 @@ public class Constants {
                     // Enable PID wrap around for the turning motor. This will allow the PID
                     // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
                     // to 10 degrees will go through 0 rather than the other direction which is a
-                    // longer route.
-                    .velocityFF(ModuleConstants.kTurningFF)
-                    .positionWrappingEnabled(true)
-                    .positionWrappingInputRange(0, turningFactor);
+                    // longer route. (REVLib 2027 dropped the input range setting; it wraps over the
+                    // absolute encoder's native 0-1 rotation.)
+                    .positionWrappingEnabled(true);
             turningConfig.voltageCompensation(12.0);
         }
     }
     
     public static final class HardwareConstants{
+        // SystemCore has several CAN buses; everything on this robot is on the first one
+        public static final CANPort kCanBus = CANPort.CAN_S0;
+
         // SPARK MAX CAN IDs 
         public static final int kFrontLeftDrivingCanId = 3;
         public static final int kFrontLeftTurningCanId = 2;
@@ -172,10 +170,14 @@ public class Constants {
         public static final double kTurningEncoderPositionPIDMinInput = 0; // radians
         public static final double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor; // radians
 
-        public static final double kDrivingP = 0.17;//0.004;
+        // REV closed-loop gains act on native units in REVLib 2027 (RPM for driving, rotations for
+        // turning) instead of the converted m/s and radians used in 2026. The 2026-tuned values are
+        // kept as the first factor and rescaled so the controllers behave the same.
+        public static final double kDrivingP = 0.17 * kDrivingEncoderVelocityFactor; // 2026: 0.17 per m/s
         public static final double kDrivingI = 0.0;
         public static final double kDrivingD = 0.0;
-        public static final double kDrivingFF = 0.21;
+        // 2026 velocityFF was 0.21 duty cycle per m/s; feedForward.kV is volts per RPM (12 V nominal)
+        public static final double kDrivingFF = 0.21 * 12.0 * kDrivingEncoderVelocityFactor;
 
         public static final double kDrivingA = .4;
         public static final double kDrivingS = 0.17;//0.2;
@@ -188,7 +190,7 @@ public class Constants {
         public static final double kDrivingMinOutput = -1;
         public static final double kDrivingMaxOutput = 1;
 
-        public static final double kTurningP = 1.5;
+        public static final double kTurningP = 1.5 * kTurningEncoderPositionFactor; // 2026: 1.5 per radian
         public static final double kTurningI = 0;
         public static final double kTurningD = 0;
         public static final double kTurningFF = 0;
@@ -258,7 +260,7 @@ public class Constants {
             kTagLayout = new AprilTagFieldLayout(testTags, 2.0, 2.0);
         }*/
 
-        public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+        public static final Field kTagLayout = Field.loadField(Fields.FRC_2026_REBUILT_WELDED);
 
         // The standard deviations of our vision estimated poses, which affect correction rate
         // (Fake values. Experiment and determine estimation noise on an actual robot.)
@@ -297,6 +299,7 @@ public class Constants {
     public static final class ClimberPositionConstants {
         public static final boolean kLeftInverted = true;
         public static final boolean kRightInverted = false;
+        // Tuned in kConversionFactor units; Configs scales them to motor rotations for REVLib 2027
         public static final double kP = 0.25; // Originally 0.05
         public static final double kI = 0.0;
         public static final double kD = 0.05; // Originally 0.01
