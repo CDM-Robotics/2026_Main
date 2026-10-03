@@ -1,7 +1,7 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.command2.SubsystemBase;
 import frc.robot.Constants.ClimberPositionConstants;
 
 public class GlobalVariables extends SubsystemBase{

@@ -8,10 +8,10 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import org.wpilib.math.controller.SimpleMotorFeedforward;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.command2.SubsystemBase;
 import frc.robot.subsystems.Configs;
 import frc.robot.subsystems.Configs.FloorIntakeConfig;
 import frc.robot.subsystems.Configs.FloorIntakeConfig;

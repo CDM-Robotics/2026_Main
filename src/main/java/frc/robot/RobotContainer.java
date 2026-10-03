@@ -2,16 +2,16 @@ package frc.robot;
 
 import org.tritontech.core.*;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import org.wpilib.math.controller.SimpleMotorFeedforward;
+import org.wpilib.math.filter.SlewRateLimiter;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.controller.PIDController;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.CommandScheduler;
+import org.wpilib.command2.InstantCommand;
+import org.wpilib.command2.SequentialCommandGroup;
+import org.wpilib.command2.WaitCommand;
+import org.wpilib.command2.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.HardwareConstants;
 import frc.robot.Constants.MAXSwerveModule;

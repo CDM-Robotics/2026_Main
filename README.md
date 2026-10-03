@@ -1,3 +1,0 @@
-Read Me Please
-
-Welcome

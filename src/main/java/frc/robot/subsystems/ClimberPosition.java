@@ -7,10 +7,10 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.math.trajectory.TrapezoidProfile;
+import org.wpilib.math.trajectory.TrapezoidProfile.Constraints;
+import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.command2.SubsystemBase;
 
 import frc.robot.Constants.ClimberPositionConstants;
 import frc.robot.Constants.HardwareConstants;

@@ -4,14 +4,18 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.driverstation.MatchState;
+import org.wpilib.driverstation.RobotState;
+import org.wpilib.driverstation.Alliance;
+import org.wpilib.driverstation.MatchType;
+import org.wpilib.driverstation.DriverStationErrors;
+import org.wpilib.driverstation.Alliance;
+import org.wpilib.framework.TimedRobot;
+import org.wpilib.smartdashboard.SendableChooser;
+import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.command2.CommandScheduler;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -76,7 +80,7 @@ public class Robot extends TimedRobot {
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
 
-    Alliance alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
+    Alliance alliance = MatchState.getAlliance().orElse(Alliance.BLUE);
     String routine = m_chooser.getSelected();
 
     if(routine.compareToIgnoreCase("HALT") == 0) {
@@ -85,7 +89,7 @@ public class Robot extends TimedRobot {
 
     m_rc.scheduleTrajectory(routine);
 
-/*     if (alliance == Alliance.Red) {
+/*     if (alliance == Alliance.RED) {
       String flippedTraj = routine.concat("Red");
       m_rc.scheduleTrajectory(flippedTraj);
     } else {
@@ -130,11 +134,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void utilityInit() {}
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void utilityPeriodic() {}
 
   /** This function is called once when the robot is first started up. */
   @Override
