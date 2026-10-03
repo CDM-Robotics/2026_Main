@@ -13,7 +13,6 @@ import org.wpilib.driverstation.MatchType;
 import org.wpilib.driverstation.DriverStationErrors;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.framework.TimedRobot;
-import org.wpilib.telemetry.Telemetry;
 import org.wpilib.tunable.Selectable;
 import org.wpilib.tunable.TunableDouble;
 import org.wpilib.tunable.Tunables;
@@ -47,8 +46,6 @@ public class Robot extends TimedRobot {
     m_chooser.add("Square Dance", "SquareDance");
 
     Tunables.publish("AUTO", m_chooser);
-    Telemetry.log("Climber Current Position", GlobalVariables.getCurrentPosition());
-    Telemetry.log("Climber Desired Position", GlobalVariables.getDesiredPosition());
 
     m_rc = new RobotContainer();
     m_rc.subsystemInit();

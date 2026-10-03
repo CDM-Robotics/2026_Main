@@ -19,8 +19,6 @@ import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.GlobalVariables.*;
-import frc.robot.commands.ReadyClimberPosition;
-import frc.robot.subsystems.ClimberPosition;
 import frc.robot.subsystems.FloorIntake;
 import frc.robot.subsystems.Hopper;
 
@@ -28,9 +26,9 @@ public class RobotContainer {
     Vision myVision = null;
 
     public final GlobalVariables m_variables = new GlobalVariables();
-    final ClimberPosition climber = new ClimberPosition();
 
-    //final ClimberPosition climber = new ClimberPosition();
+    // The climber was permanently removed from the robot, so ClimberPosition (SPARK MAX CAN IDs
+    // 14/15) is no longer created and its engineer-controller bindings are gone.
 
     SwerveModule frontLeft = new SwerveModule(HardwareConstants.kCanBus,
                                               HardwareConstants.kFrontLeftDrivingCanId, 
@@ -141,36 +139,11 @@ public class RobotContainer {
         m_engineerController.y().onTrue(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(-4000)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(4000))));
         m_engineerController.y().onFalse(new SequentialCommandGroup(new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), new InstantCommand(() -> hopper.setSetpoint(0))));
 
-        m_engineerController.rightTrigger().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.HOME))
-                                                  , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.rightBumper().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.EXTEND))
-                                                  , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.leftBumper().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CLIMB))
-                                                  , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.dpadUp().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_UP))
-                                                  , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.dpadDown().onTrue(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_DOWN))
-                                                  , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.dpadUp().onFalse(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_STOP))
-                                                  , new ReadyClimberPosition(m_variables, climber)));
-        m_engineerController.dpadDown().onFalse(new SequentialCommandGroup(new InstantCommand(() -> m_variables.setMode(Mode.CUSTOM_STOP))
-                                                  , new ReadyClimberPosition(m_variables, climber)));
         // Dump to human player
         //m_engineerController.b().onTrue(null);
 
         // Shoot
         //m_engineerController.y().onTrue(null);
-
-        // Climber to Home position
-/*         m_engineerController.rightTrigger().onTrue(new SequentialCommandGroup(
-                        new InstantCommand(() -> m_variables.setClimberMode(ClimberMode.HOME)),
-                        new ReadyClimberPosition(m_variables, climber))); */
-
-        // Climber to full extension
-    //    m_engineerController.rightBumper().onTrue(null);
-
-        // Climber stop
-    //    m_engineerController.a().onTrue(null);
     }
 
     public void resetHeading() {
