@@ -18,7 +18,7 @@ public class Configs {
                         .disableFollowerMode()
                         .idleMode(IdleMode.kCoast)
                         .inverted(FloorIntakeConstants.kCoralHolderInverted)
-                        .smartCurrentLimit(80)
+                        .smartCurrentLimit(FloorIntakeConstants.kCurrentLimit)
                         .voltageCompensation(12.0);
                 m_elevatorShooterConfig.encoder
                         .quadratureAverageDepth(2)

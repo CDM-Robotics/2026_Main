@@ -303,6 +303,9 @@ public class Constants {
     }
 
     public static final class FloorIntakeConstants{
+        // NEO current limit for the floor intake and hopper (they share Configs.FloorIntakeConfig).
+        // 40 A matches a 40 A breaker channel and protects the NEO if a roller stalls/jams.
+        public static final int kCurrentLimit = 40; // amps
         public static final double kP = 0.00;  // Originally 0.0 --> 0.00165
         public static final double kPReverse = 0.0002;  // Originally 0.0002
         public static final double kI = 0.0;  // Originally 0.0
