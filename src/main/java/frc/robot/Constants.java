@@ -94,6 +94,8 @@ public class Constants {
         public static final int kRearRightTurningCanId = 6;
 
         public static final int kFloorIntakeCanId = 12;
+        // REV Power Distribution Hub (1 is REV's factory default CAN ID)
+        public static final int kPdhCanId = 1;
         public static final int kHopperCanId = 13;
     
         public static final double kBumperDistance = Units.inchesToMeters(16.0);

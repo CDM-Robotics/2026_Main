@@ -13,6 +13,9 @@ import org.wpilib.driverstation.MatchType;
 import org.wpilib.driverstation.DriverStationErrors;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.framework.TimedRobot;
+import org.wpilib.hardware.power.PowerDistribution;
+import org.wpilib.hardware.power.PowerDistribution.ModuleType;
+import org.wpilib.telemetry.Telemetry;
 import org.wpilib.tunable.Selectable;
 import org.wpilib.tunable.TunableDouble;
 import org.wpilib.tunable.Tunables;
@@ -33,6 +36,10 @@ public class Robot extends TimedRobot {
       Tunables.addDouble("Steering Bias", Constants.HardwareConstants.kDefaultGyroBias);
 
   private final RobotContainer m_rc;
+
+  // REV PDH, read for battery voltage / total current telemetry
+  private final PowerDistribution m_pdh = new PowerDistribution(
+      Constants.HardwareConstants.kCanBus, Constants.HardwareConstants.kPdhCanId, ModuleType.REV);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -62,6 +69,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+
+    Telemetry.log("Battery Voltage", m_pdh.getVoltage());
+    Telemetry.log("PDH Total Current", m_pdh.getTotalCurrent());
   }
 
   /**
