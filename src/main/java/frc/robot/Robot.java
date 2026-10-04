@@ -54,6 +54,8 @@ public class Robot extends TimedRobot {
 
     Tunables.publish("AUTO", m_chooser);
 
+    addPeriodic(this::logPowerTelemetry, Constants.HardwareConstants.kPowerTelemetryPeriod);
+
     m_rc = new RobotContainer();
     m_rc.subsystemInit();
     m_rc.resetHeading();
@@ -69,7 +71,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+  }
 
+  /** Battery voltage / total current from the PDH; runs at kPowerTelemetryPeriod (1 Hz), not every loop. */
+  private void logPowerTelemetry() {
     Telemetry.log("Battery Voltage", m_pdh.getVoltage());
     Telemetry.log("PDH Total Current", m_pdh.getTotalCurrent());
   }
