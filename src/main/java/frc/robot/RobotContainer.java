@@ -164,9 +164,11 @@ public class RobotContainer {
                         traj, 
                         new InstantCommand(() -> m_DriveTrain.stopModules()),
                         new InstantCommand(() -> floorIntake.setSetpoint(-4000)).withTimeout(1.0) , 
+                        new WaitCommand(1.0),
                         new InstantCommand(() -> hopper.setSetpoint(4000) ).withTimeout(1.0),
                         new WaitCommand(5.0),
                         new InstantCommand(() -> floorIntake.setSetpoint(0)).withTimeout(1.0), 
+                        new WaitCommand(1.0),
                         new InstantCommand(() -> hopper.setSetpoint(0)).withTimeout(1.0) );
             } else {
                scg = new SequentialCommandGroup(new WaitCommand(1.0), traj); 
